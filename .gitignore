@@ -1,3 +1,10 @@
-*.bundle.js
-*.config
+# Setup
 node_modules/
+package-lock.json
+
+# Compiled
+client/dist/bundle.js
+build/
+
+# Config
+db/config.js
