@@ -16,8 +16,8 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    this.canvas.width = 500;
-    this.canvas.height = 400;
+    this.canvas.width = 2000; // hardcoded for now
+    this.canvas.height = 1000;
     this.context = this.canvas.getContext('2d');
     this.context.lineJoin = 'round';
     this.context.lineCap = 'round';
@@ -90,7 +90,6 @@ class Canvas extends React.Component {
   saveStrokes() {
     // save to blob
     // save blob to db
-    console.log('saving strokes');
     const saved = this.canvas.toBlob((blob) => {
       console.log('=====PRINTING BLOB=======');
       console.log(blob);
@@ -109,17 +108,17 @@ class Canvas extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ height: '100%', width: '100%', position: 'absolute', zIndex: 10 }}>
         <canvas
+          // style={{ height: '100%', width: '100%' }}
           ref={(ref) => (this.canvas = ref)}
-          style={{ background: 'black' }}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.endPaintEvent}
           onMouseMove={this.onMouseMove}
         />
-        {/* <button onClick={this.saveStrokes.bind(this)}>SAVE</button> */}
+        <button onClick={this.saveStrokes.bind(this)}>DONE</button>
       </div>
-    )
+    );
   }
 }
 

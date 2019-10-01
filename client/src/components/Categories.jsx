@@ -16,7 +16,9 @@ const PickerArea = styled.div`
 `;
 
 const Category = styled.div`
-
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 class Categories extends React.Component {
