@@ -3,18 +3,33 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import $ from 'jquery';
 
+const ToggleButton = styled.div`
+  position: absolute;
+  z-index: 50;
+  right: 4%;
+  top: 27%;
+  cursor: pointer;
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  background-color: white;
+`;
+
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
-    this.endPaintEvent = this.endPaintEvent.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
     this.isPainting = false;
 
     this.color = '#0000ff';
     this.prevPos = { offsetX: 0, offsetY: 0 };
     this.line = [];
+    this.state = {
+      mode: 'draw'
+    };
   }
 
   componentDidMount() {
@@ -31,46 +46,59 @@ class Canvas extends React.Component {
       let y = e.pageY;
       $('.brush').css('left', x);
       $('.brush').css('top', y);
-    })
+    });
+  }
+
+  toggleMode() {
+    console.log("CLICKED")
+    let newMode = this.state.mode === 'draw' ? 'text' : 'draw';
+    this.setState({
+      mode: newMode
+    });
   }
 
   onMouseDown({ nativeEvent }) {
-    const { offsetX, offsetY } = nativeEvent;
-    this.isPainting = true;
-    this.prevPos = { offsetX, offsetY };
-    // console.log(this.prevPos);
+    if (this.state.mode === 'draw') {
+      const { offsetX, offsetY } = nativeEvent;
+      this.isPainting = true;
+      this.prevPos = { offsetX, offsetY };
+    }
   }
 
   onMouseMove({ nativeEvent }) {
-    if (this.isPainting) {
-      const { offsetX, offsetY } = nativeEvent;
-      const offSetData = { offsetX, offsetY };
-      const positionData = {
-        start: { ...this.prevPos },
-        stop: { ...offSetData },
-      };
-      this.line = this.line.concat(positionData);
-      this.setColor();
-      console.log(this.color);
-      this.paint(this.prevPos, offSetData, this.color);
+    if (this.state.mode === 'draw') {
+      if (this.isPainting) {
+        const { offsetX, offsetY } = nativeEvent;
+        const offSetData = { offsetX, offsetY };
+        const positionData = {
+          start: { ...this.prevPos },
+          stop: { ...offSetData },
+        };
+        this.line = this.line.concat(positionData);
+        this.setColor();
+        console.log(this.color);
+        this.paint(this.prevPos, offSetData, this.color);
+      }
     }
   }
 
   paint(prevPos, currPos, strokeStyle) {
-    const { offsetX, offsetY } = currPos;
-    const { offsetX: x, offsetY: y } = prevPos;
-
-    this.context = this.state.context;
-
-    this.context.beginPath();
-    this.context.strokeStyle = strokeStyle;
-    // Move the the prevPosition of the mouse
-    this.context.moveTo(x, y);
-    // Draw a line to the current position of the mouse
-    this.context.lineTo(offsetX, offsetY);
-    // Visualize the line using the strokeStyle
-    this.context.stroke();
-    this.prevPos = { offsetX, offsetY };
+    if (this.state.mode === 'draw') {
+      const { offsetX, offsetY } = currPos;
+      const { offsetX: x, offsetY: y } = prevPos;
+  
+      this.context = this.state.context;
+  
+      this.context.beginPath();
+      this.context.strokeStyle = strokeStyle;
+      // Move the the prevPosition of the mouse
+      this.context.moveTo(x, y);
+      // Draw a line to the current position of the mouse
+      this.context.lineTo(offsetX, offsetY);
+      // Visualize the line using the strokeStyle
+      this.context.stroke();
+      this.prevPos = { offsetX, offsetY };
+    }
   }
 
   setColor() {
@@ -99,11 +127,64 @@ class Canvas extends React.Component {
     }
   }
 
-  endPaintEvent() {
-    if (this.isPainting) {
-      this.isPainting = false;
+  onMouseUp(e) {
+    let x = e.pageX;
+    let y = e.pageY;
+    if (this.state.mode === 'draw') {
+      if (this.isPainting) {
+        this.isPainting = false;
+      }
+    } else if (this.state.mode === 'text') {
+      // create canvas context
+      this.context = this.canvas.getContext('2d');      
+      this.context.font = '60px sans-serif';
+      
+      // create form
+      var form = document.createElement('form');
+      form.setAttribute('id', 'form');
+      $('body').append(form);
+
+      // create input
+      var input = document.createElement('input');
+      form.appendChild(input);
+      input.type = 'text';
+      input.className = 'dynamicTextInput';
+      input.setAttribute('id', 'dynamicTextInput');
+      $('input').css({'position': 'absolute'}, {'top': y}, {'right': x}, {'z-index': 60});
+      input.setAttribute("style",
+        `
+        font-family: Helveitca, sans-serif;
+        font-size: 40px;
+        border: 1px solid black;
+        z-index: 70;
+        position: absolute;
+        opacity: 1.0 !important;
+        top: ${y}px;
+        left: ${x}px
+        `
+      );
+      $('.dynamicTextInput').focus();
+
+      const renderTextToMap = (text) => {
+        console.log("from renderTextToMap: ", text)
+        this.context.fillText(text, x, y);
+      };
+
+      var textVal = '';
+
+      input.onchange = function(e) {
+        console.log('From onchange: ', e.target.value)
+        textVal = e.target.value;
+        renderTextToMap(textVal);
+        console.log('From onchange: ', this.context);
+      }
+
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        $('.dynamicTextInput').remove();
+      }
+      
     }
-    console.log(this.line);
   }
 
   saveStrokes() {
@@ -143,9 +224,10 @@ class Canvas extends React.Component {
           style={{ opacity: '0.5' }}
           ref={(ref) => (this.canvas = ref)}
           onMouseDown={this.onMouseDown}
-          onMouseUp={this.endPaintEvent}
+          onMouseUp={this.onMouseUp}
           onMouseMove={this.onMouseMove}
         />
+        <ToggleButton onClick={this.toggleMode.bind(this)}>DRAW/TEXT</ToggleButton>
         <button onClick={this.saveStrokes.bind(this)}>DONE</button>
       </div>
     );

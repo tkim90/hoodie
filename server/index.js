@@ -18,7 +18,6 @@ app.use((req, res, next) => {
 
 app.get('/:city', (req, res) => {
   const city = req.params.city;
-
   console.log(city);
 });
 
