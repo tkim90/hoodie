@@ -1,7 +1,14 @@
 import React from 'react';
-import { ReactMapGL, StaticMap } from 'react-map-gl';
+import ReactMapGL from 'react-map-gl';
 import config from '../mapboxConfig.js';
 import styled from 'styled-components';
+
+import {SVGOverlay} from 'react-map-gl';
+
+function redraw({project}) {
+  const [cx, cy] = project([-122, 37]);
+  return <circle cx={cx} cy={cy} r={4} fill="blue" />;
+}
 
 class Map extends React.Component {
   constructor(props) {
@@ -18,8 +25,9 @@ class Map extends React.Component {
     };
   }
 
-  toggleInteractivity(e) {
-    // console.log("Toggled interactivity.");
+  toggleMode(e) {
+    // drag vs draw
+    console.log("Toggled interactivity.");
     // this.state.interactivityIsEnabled ? React.cloneElement(
     //   this.ReactMapGL,
     //   {
@@ -30,7 +38,7 @@ class Map extends React.Component {
 
   render() {
     return (
-      <StaticMap
+      <ReactMapGL
         mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
         {...this.state.viewport}
         onViewportChange={(viewport) => this.setState({viewport})}
@@ -40,7 +48,9 @@ class Map extends React.Component {
         // dragRotate={false}
         // doubleClickZoom={false}
         // touchZoom={false}
-      />
+      >
+        <SVGOverlay redraw={redraw} />
+      </ReactMapGL>
     );
   }
 }

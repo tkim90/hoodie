@@ -7,10 +7,10 @@ import Map from './Map.jsx'
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.setCategoryChoice = this.setCategoryChoice.bind(this);
     this.state = {
       selectedCategory: 'Techies'
     };
+    this.setCategoryChoice = this.setCategoryChoice.bind(this);
   }
 
   componentDidMount() {
@@ -33,10 +33,10 @@ class App extends React.Component {
           ref={(childRef) => {this.childRef = childRef}}
           selectedCategory={this.state.selectedCategory}
         />
-        {/* <Categories 
+        <Categories 
           style={{ position: 'absolute' }}
           setCategoryChoice={this.setCategoryChoice}
-        /> */}
+        />
         <Map />
       </div>
     )

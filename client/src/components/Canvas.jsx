@@ -17,11 +17,11 @@ class Canvas extends React.Component {
 
   componentDidMount() {
     this.canvas.width = 2000; // hardcoded for now
-    this.canvas.height = 1000;
+    this.canvas.height = 1500;
     this.context = this.canvas.getContext('2d');
     this.context.lineJoin = 'round';
     this.context.lineCap = 'round';
-    this.context.lineWidth = 10;
+    this.context.lineWidth = 40;
     this.setState({ context: this.context });
   }
 
@@ -65,15 +65,22 @@ class Canvas extends React.Component {
   }
 
   setColor() {
-    switch (this.props.selectedCategory) {
-      case 'Techies':
+    switch (this.props.selectedCategory
+      .replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '')
+      .trim()
+      .toLowerCase()
+      ) {
+      case 'techies':
         this.color = 'blue';
         break;
-      case 'Rich':
+      case 'rich':
         this.color = 'green';
         break;
-      case 'Normies':
+      case 'normies':
         this.color = 'yellow';
+        break;
+      case 'tourists':
+        this.color = 'red';
         break;
       default:
         this.color = 'blue';
@@ -106,11 +113,22 @@ class Canvas extends React.Component {
     console.log(saved);
   }
 
+  renderImageFromBlob() {
+    var ctx = this.getContext('2d');
+    var img = new Image();
+  
+    img.onload = function(){
+      ctx.drawImage(img, 0, 0)
+    }
+  
+    img.src = URL.createObjectURL(blob);
+  }
+
   render() {
     return (
       <div style={{ height: '100%', width: '100%', position: 'absolute', zIndex: 10 }}>
         <canvas
-          // style={{ height: '100%', width: '100%' }}
+          style={{ opacity: '0.3' }}
           ref={(ref) => (this.canvas = ref)}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.endPaintEvent}
