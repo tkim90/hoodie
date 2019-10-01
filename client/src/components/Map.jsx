@@ -17,9 +17,10 @@ class Map extends React.Component {
       viewport: {
         width: "100vw",
         height: "100vh",
-        latitude: 37.7577,
-        longitude: -122.4376,
-        zoom: 13,
+        // 37.781086, -122.433978
+        latitude: 37.781086,
+        longitude: -122.433978,
+        zoom: 13.5,
         interactivityIsEnabled: true,
       }
     };

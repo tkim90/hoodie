@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
 
+app.use('/', express.static('client/src/assets'));
+app.use('/:city', express.static('client/src/assets'));
 app.use('/', express.static('client/dist'));
 app.use('/:city', express.static('client/dist'));
 app.use(bodyParser.json());

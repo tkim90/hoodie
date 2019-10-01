@@ -8,7 +8,15 @@ const Wrapper = styled.div`
   z-index: 11;
   right: 3%;
   top: 30%;
+`;
 
+const Logo = styled.div`
+  position: relative;
+  content: url('../assets/logo.png');
+  width: 200px;
+  height: 85%;
+  z-index: 100;
+  opacity: 0.8;
 `;
 
 const PickerArea = styled.div`
@@ -36,11 +44,16 @@ class Categories extends React.Component {
   render() {
     return (
       <Wrapper>
+        <Logo/>
         <PickerArea>
           <Category 
             style={{ backgroundColor: 'blue' }}
             onClick={this.props.setCategoryChoice}
           > 🤓 Techies</Category>
+          <Category 
+            style={{ backgroundColor: 'purple' }}
+            onClick={this.props.setCategoryChoice}
+          > 🧔🏻 Hipsters</Category>
           <Category
             style={{ backgroundColor: 'green' }}
             onClick={this.props.setCategoryChoice}

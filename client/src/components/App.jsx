@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Canvas from './Canvas.jsx'
-import Categories from './Categories.jsx'
-import Map from './Map.jsx'
+import Canvas from './Canvas.jsx';
+import Categories from './Categories.jsx';
+import Map from './Map.jsx';
+import $ from 'jquery';
+import styled from 'styled-components';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,6 +13,7 @@ class App extends React.Component {
       selectedCategory: 'Techies'
     };
     this.setCategoryChoice = this.setCategoryChoice.bind(this);
+    this.selectedCategory = this.state.selectedCategory;
   }
 
   componentDidMount() {
@@ -20,6 +23,29 @@ class App extends React.Component {
   }
 
   setCategoryChoice(e) {
+    switch (this.selectedCategory
+      .replace(/([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '')
+      .trim()
+      .toLowerCase()
+      ) {
+      case 'techies':
+        $('.brush').css('background-color', 'blue');
+        break;
+      case 'hipsters':
+        $('.brush').css('background-color', 'purple');
+        break;
+      case 'rich':
+        $('.brush').css('background-color', 'green');
+        break;
+      case 'normies':
+        $('.brush').css('background-color', 'yellow');
+        break;
+      case 'tourists':
+      $('.brush').css('background-color', 'red');
+        break;
+      default:
+      $('.brush').css('background-color', 'blue');
+    }
     this.setState({
       selectedCategory: e.target.textContent
     });

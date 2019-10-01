@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import $ from 'jquery';
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -23,6 +25,13 @@ class Canvas extends React.Component {
     this.context.lineCap = 'round';
     this.context.lineWidth = 40;
     this.setState({ context: this.context });
+
+    document.addEventListener('mousemove', (e) => {
+      let x = e.pageX;
+      let y = e.pageY;
+      $('.brush').css('left', x);
+      $('.brush').css('top', y);
+    })
   }
 
   onMouseDown({ nativeEvent }) {
@@ -72,6 +81,9 @@ class Canvas extends React.Component {
       ) {
       case 'techies':
         this.color = 'blue';
+        break;
+      case 'hipsters':
+        this.color = 'purple';
         break;
       case 'rich':
         this.color = 'green';
@@ -128,7 +140,7 @@ class Canvas extends React.Component {
     return (
       <div style={{ height: '100%', width: '100%', position: 'absolute', zIndex: 10 }}>
         <canvas
-          style={{ opacity: '0.3' }}
+          style={{ opacity: '0.5' }}
           ref={(ref) => (this.canvas = ref)}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.endPaintEvent}
