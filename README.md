@@ -10,4 +10,3 @@ Back End
 - Node/Express
 - Mapbox API
 - PostgreSQL
-- Webpack/Babel
