@@ -36,40 +36,44 @@ const Category = styled.div`
   }
 `;
 
-class Categories extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Wrapper>
-        <Logo/>
-        <PickerArea>
-          <Category 
-            style={{ backgroundColor: 'blue' }}
-            onClick={this.props.setCategoryChoice}
-          > 🤓 Techies</Category>
-          <Category 
-            style={{ backgroundColor: 'purple' }}
-            onClick={this.props.setCategoryChoice}
-          > 🧔🏻 Hipsters</Category>
-          <Category
-            style={{ backgroundColor: 'green' }}
-            onClick={this.props.setCategoryChoice}
-          > 💸 Rich</Category>
-          <Category
-            style={{ backgroundColor: 'yellow' }}
-            onClick={this.props.setCategoryChoice}
-          > 💁🏻 Normies</Category>
-          <Category
-            style={{ backgroundColor: 'red' }}
-            onClick={this.props.setCategoryChoice}
-          > 📷 Tourists</Category>
-        </PickerArea>
-      </Wrapper>
-    )
-  }
+const Categories = (props) => {
+  return (
+    <Wrapper>
+      <Logo/>
+      <PickerArea>
+        <Category 
+          style={{ backgroundColor: 'blue' }}
+          onClick={props.setCategoryChoice}
+        >
+          🤓 Techies
+        </Category>
+        <Category 
+          style={{ backgroundColor: 'purple' }}
+          onClick={props.setCategoryChoice}
+        >
+          🧔🏻 Hipsters
+        </Category>
+        <Category
+          style={{ backgroundColor: 'green' }}
+          onClick={props.setCategoryChoice}
+        >
+          💸 Rich
+        </Category>
+        <Category
+          style={{ backgroundColor: 'yellow' }}
+          onClick={props.setCategoryChoice}
+        >
+          💁🏻 Normies
+        </Category>
+        <Category
+          style={{ backgroundColor: 'red' }}
+          onClick={props.setCategoryChoice}
+        >
+          📷 Tourists
+        </Category>
+      </PickerArea>
+    </Wrapper>
+  )
 }
 
 export default Categories;

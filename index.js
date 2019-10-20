@@ -13,6 +13,6 @@ app.use(cors());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 
 app.use(express.static(__dirname + '/client/dist'));
-// app.use(express.static(__dirname + '/client/src/assets'));
+app.use('/assets', express.static(__dirname + '/client/src/assets'));
 
 app.listen(PORT, () => {console.log(`Listening on ${PORT}!`)})

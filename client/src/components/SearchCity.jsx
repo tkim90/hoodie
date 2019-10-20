@@ -19,7 +19,8 @@ class SearchCity extends React.Component {
   }
 
   render() {
-    return <SearchBar value = "San Francisco" />
+    // return <SearchBar value = "San Francisco" />
+    return <div>TEST</div>
   }
 }
 

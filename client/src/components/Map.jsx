@@ -24,29 +24,12 @@ class Map extends React.Component {
     };
   }
 
-  toggleMode(e) {
-    // drag vs draw
-    console.log("Toggled interactivity.");
-    // this.state.interactivityIsEnabled ? React.cloneElement(
-    //   this.ReactMapGL,
-    //   {
-    //     dragPan: { false },
-    //   }
-    // ) : null;
-  }
-
   render() {
     return (
       <ReactMapGL
         mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
         {...this.state.viewport}
         onViewportChange={(viewport) => this.setState({viewport})}
-        // scrollZoom={false}
-        // dragPan={false}
-        // doubleClickZoom={false}
-        // dragRotate={false}
-        // doubleClickZoom={false}
-        // touchZoom={false}
       >
         <SVGOverlay redraw={redraw} />
       </ReactMapGL>

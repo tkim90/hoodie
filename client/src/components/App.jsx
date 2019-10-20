@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import Canvas from './Canvas.jsx';
 import Categories from './Categories.jsx';
 import SearchCity from './SearchCity.jsx';
@@ -56,11 +55,11 @@ class App extends React.Component {
     return (
       <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }}>
         <SearchCity/>
-        {/* <Canvas
+        <Canvas
           style={{ position: 'absolute', height: '100vh', width: '100vw', zIndex: 10 }}
           ref={(childRef) => {this.childRef = childRef}}
           selectedCategory={this.state.selectedCategory}
-        /> */}
+        />
         <Categories 
           style={{ position: 'absolute' }}
           setCategoryChoice={this.setCategoryChoice}
