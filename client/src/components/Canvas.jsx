@@ -6,7 +6,7 @@ import $ from 'jquery';
 const ToggleButton = styled.div`
   position: absolute;
   z-index: 50;
-  right: 4%;
+  right: 6%;
   top: 27%;
   cursor: pointer;
   font-family: Helvetica, sans-serif;
@@ -38,7 +38,7 @@ class Canvas extends React.Component {
     this.context = this.canvas.getContext('2d');
     this.context.lineJoin = 'round';
     this.context.lineCap = 'round';
-    this.context.lineWidth = 40;
+    this.context.lineWidth = 50;
     this.setState({ context: this.context });
 
     document.addEventListener('mousemove', (e) => {
@@ -137,7 +137,8 @@ class Canvas extends React.Component {
     } else if (this.state.mode === 'text') {
       // create canvas context
       this.context = this.canvas.getContext('2d');      
-      this.context.font = '60px sans-serif';
+      this.context.font = 'bold 40px sans-serif';
+      this.context.globalAlpha = 1.0;
       
       // create form
       var form = document.createElement('form');
@@ -218,6 +219,7 @@ class Canvas extends React.Component {
   }
 
   render() {
+    const buttonVal = this.state.mode.toUpperCase();
     return (
       <div style={{ height: '100%', width: '100%', position: 'absolute', zIndex: 10 }}>
         <canvas
@@ -227,7 +229,7 @@ class Canvas extends React.Component {
           onMouseUp={this.onMouseUp}
           onMouseMove={this.onMouseMove}
         />
-        <ToggleButton onClick={this.toggleMode.bind(this)}>DRAW/TEXT</ToggleButton>
+          <ToggleButton onClick={this.toggleMode.bind(this)}>{buttonVal}</ToggleButton>
         <button onClick={this.saveStrokes.bind(this)}>DONE</button>
       </div>
     );

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactMapGL from 'react-map-gl';
 import config from '../mapboxConfig.js';
-import styled from 'styled-components';
 
 import {SVGOverlay} from 'react-map-gl';
 
@@ -17,10 +16,9 @@ class Map extends React.Component {
       viewport: {
         width: "100vw",
         height: "100vh",
-        // 37.781086, -122.433978
-        latitude: 37.781086,
-        longitude: -122.433978,
-        zoom: 13.5,
+        latitude: 37.5665,
+        longitude: 126.9780,
+        zoom: 10,
         interactivityIsEnabled: true,
       }
     };
