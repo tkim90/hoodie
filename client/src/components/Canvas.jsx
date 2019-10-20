@@ -141,6 +141,10 @@ class Canvas extends React.Component {
       
       // create form
       var form = document.createElement('form');
+      form.setAttribute("style",`
+        color: white !important;
+        -webkit-text-stroke: 2px black !important;
+      `);
       form.setAttribute('id', 'form');
       $('body').append(form);
 
@@ -151,8 +155,7 @@ class Canvas extends React.Component {
       input.className = 'dynamicTextInput';
       input.setAttribute('id', 'dynamicTextInput');
       $('input').css({'position': 'absolute'}, {'top': y}, {'right': x}, {'z-index': 60});
-      input.setAttribute("style",
-        `
+      input.setAttribute("style", `
         font-family: Helveitca, sans-serif;
         font-size: 40px;
         border: 1px solid black;
@@ -160,7 +163,7 @@ class Canvas extends React.Component {
         position: absolute;
         opacity: 1.0 !important;
         top: ${y}px;
-        left: ${x}px
+        left: ${x}px;
         `
       );
       $('.dynamicTextInput').focus();

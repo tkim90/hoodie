@@ -1,38 +1,56 @@
-import React from 'react';
-import ReactMapGL from 'react-map-gl';
+import React, { Component } from 'react';
+import MapGL, { Marker } from 'react-map-gl';
 import config from '../mapboxConfig.js';
 
-import {SVGOverlay} from 'react-map-gl';
-
-function redraw({project}) {
-  const [cx, cy] = project([-122, 37]);
-  return <circle cx={cx} cy={cy} r={4} fill="blue" />;
-}
-
-class Map extends React.Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
       viewport: {
-        width: "100vw",
-        height: "100vh",
         latitude: 37.5665,
         longitude: 126.9780,
-        zoom: 10,
-        interactivityIsEnabled: true,
-      }
+        zoom: 12.5,
+        maxZoom: 16,
+        bearing: 0,
+        pitch: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
+      markers: []
     };
+    this.addMarker = this.addMarker.bind(this);
+  }
+
+  addMarker({lngLat: [longitude, latitude]}) {
+    // get long lat
+    // push to markers state array
+    let newMarkers = this.state.markers;
+    newMarkers.push([longitude, latitude]);
+    console.log(`newMarkers: ${JSON.stringify(newMarkers)}`);
+    console.log(`this.state.markers: ${JSON.stringify(this.state.markers)}`);
+    this.setState({ markers: newMarkers });
   }
 
   render() {
+    const {viewport} = this.state;
+
     return (
-      <ReactMapGL
+      <MapGL
+        {...viewport}
+        mapStyle="mapbox://styles/mapbox/dark-v9"
+        onViewportChange={v => this.setState({viewport: v})}
         mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
-        {...this.state.viewport}
-        onViewportChange={(viewport) => this.setState({viewport})}
+        onClick={this.addMarker}
       >
-        <SVGOverlay redraw={redraw} />
-      </ReactMapGL>
+        {/* {this.state.markers.length ? 
+          this.state.markers.map((m, i) => 
+            <Marker coordinates={m} key={i} >
+              {`Clicked here: ${m.longitude}, ${m.latitude}`}
+            </Marker>
+          ) 
+          : null
+        } */}
+      </MapGL>
     );
   }
 }
