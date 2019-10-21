@@ -29,9 +29,22 @@ class Map extends Component {
         height: window.innerHeight,
       },
       markers: [],
-      textValues: [],
+      textValue: '',
       inputForm: [],
-      currCoords: []
+      currCoords: [],
+      xYpoint: [],
+      geoJSON: []
+      // {
+      //   "type": "Feature",
+      //   "geometry": {
+      //     "type": "Point",
+      //     "coordinates": [125.6, 10.1]
+      //   },
+      //   "properties": {
+      //     "name": "Dinagat Islands"
+      //   }
+      // }
+      // geoJSON[idx].properties.name
     };
     this.addMarker = this.addMarker.bind(this);
     this.appendInput = this.appendInput.bind(this);
@@ -39,31 +52,46 @@ class Map extends Component {
     this.removeInput = this.removeInput.bind(this);
   }
 
-  appendInput({lngLat: [longitude, latitude]}) {
+  appendInput({point, lngLat: [longitude, latitude]}) {
     const newInputForm = this.state.inputForm;
     newInputForm.push('input-form');
-    this.setState({ 
+    this.setState({
       inputForm: newInputForm,
-      currCoords: [longitude, latitude]
+      currCoords: [longitude, latitude],
+      xYpoint: point
     });
+    $('#inputElement').focus();
   }
   
   onChangeInputHandler(e) {
     e.preventDefault();
-    console.log(e.target.value);
+    this.setState( { textValue: e.target.value });
+  }
+
+  removeInput(e) {
+    e.preventDefault();
+    this.addMarker(this.state.currCoords[0], this.state.currCoords[1]);
+    const newGeoJSONpoint = {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": this.state.currCoords
+      },
+      "properties": {
+        "name": this.state.textValue
+      }
+    };
+    let newGeoJSON = this.state.geoJSON;
+    newGeoJSON.push(newGeoJSONpoint);
+    console.log(JSON.stringify(newGeoJSON));
+    this.setState( { geoJSON: newGeoJSON });
+    $(e.target).remove();
   }
 
   addMarker(longitude, latitude) {
     let newMarkers = this.state.markers;
     newMarkers.push([longitude, latitude]);
     this.setState({ markers: newMarkers });
-  }
-
-  removeInput(e) {
-    e.preventDefault();
-    console.log(`adding marker and removing input`)
-    this.addMarker(this.state.currCoords[0], this.state.currCoords[1]);
-    $(e.target).remove();
   }
 
   render() {
@@ -79,18 +107,23 @@ class Map extends Component {
       >
         {this.state.inputForm.length !== 0 ?
           this.state.inputForm.map((input, i) =>
-            <form onSubmit={this.removeInput}>
-              <InputElement type='text' key={i} onChange={this.onChangeInputHandler}/>
+            <form key={i} onSubmit={this.removeInput}>
+              <InputElement
+                id='inputElement'
+                type='text'
+                key={i}
+                onChange={this.onChangeInputHandler}
+                style={{ left: `${this.state.xYpoint[0]}.px`, top: `${this.state.xYpoint[1]}px` }}
+              />
             </form>
           )
         : null}
 
         {this.state.markers.length !== 0 ? 
           this.state.markers.map((m, i) => {
-            console.log(m, i)
             return (
               <Marker latitude={m[1]} longitude={m[0]} key={i} >
-                {`Clicked here: ${m[1]}, ${m[0]}`}
+                {this.state.geoJSON.length ? this.state.geoJSON[i].properties.name : null}
               </Marker>
             )
           }
