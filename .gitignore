@@ -8,4 +8,4 @@ build/
 
 # Config
 db/config.js
-client/src/mapboxConfig.js
+./client/src/mapboxConfig.js
