@@ -58,11 +58,11 @@ class App extends React.Component {
           style={{ position: 'absolute', height: '100vh', width: '100vw', zIndex: 10 }}
           ref={(childRef) => {this.childRef = childRef}}
           selectedCategory={this.state.selectedCategory}
-        />
+        /> */}
         <Categories 
           style={{ position: 'absolute' }}
           setCategoryChoice={this.setCategoryChoice}
-        /> */}
+        />
         <Map />
       </div>
     )

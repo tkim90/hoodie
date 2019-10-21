@@ -14,6 +14,17 @@ const InputElement = styled.input`
   border-radius: 25px;
 `;
 
+const MarkerText = styled.div`
+  font: 32px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  white-space: normal !important;
+  will-change: transform;
+  text-align: left;
+  color: white;
+  user-select: none;
+  font-weight: 900;
+  -webkit-text-stroke: 1px black;
+`;
+
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -34,17 +45,6 @@ class Map extends Component {
       currCoords: [],
       xYpoint: [],
       geoJSON: []
-      // {
-      //   "type": "Feature",
-      //   "geometry": {
-      //     "type": "Point",
-      //     "coordinates": [125.6, 10.1]
-      //   },
-      //   "properties": {
-      //     "name": "Dinagat Islands"
-      //   }
-      // }
-      // geoJSON[idx].properties.name
     };
     this.addMarker = this.addMarker.bind(this);
     this.appendInput = this.appendInput.bind(this);
@@ -83,7 +83,6 @@ class Map extends Component {
     };
     let newGeoJSON = this.state.geoJSON;
     newGeoJSON.push(newGeoJSONpoint);
-    console.log(JSON.stringify(newGeoJSON));
     this.setState( { geoJSON: newGeoJSON });
     $(e.target).remove();
   }
@@ -123,7 +122,7 @@ class Map extends Component {
           this.state.markers.map((m, i) => {
             return (
               <Marker latitude={m[1]} longitude={m[0]} key={i} >
-                {this.state.geoJSON.length ? this.state.geoJSON[i].properties.name : null}
+                <MarkerText>{this.state.geoJSON.length ? this.state.geoJSON[i].properties.name : null}</MarkerText>
               </Marker>
             )
           }
