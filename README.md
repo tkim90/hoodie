@@ -11,5 +11,5 @@ Front End
 
 Back End
 - Node/Express
-- Mapbox API
+- Mapbox API (via [React Map GL](https://github.com/uber/react-map-gl))
 - PostgreSQL
