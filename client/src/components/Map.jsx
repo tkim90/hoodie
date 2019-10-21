@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
-import config from '../mapboxConfig.js';
 import $ from 'jquery';
 import styled from 'styled-components';
 
@@ -101,7 +100,7 @@ class Map extends Component {
         {...viewport}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={v => this.setState({viewport: v})}
-        mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
+        mapboxApiAccessToken={process.env.MAPBOX_APP_TOKEN}
         onClick={this.appendInput}
       >
         {this.state.inputForm.length !== 0 ?

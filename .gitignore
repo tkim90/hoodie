@@ -1,11 +1,12 @@
+# Ignore Mac system files
+.DS_store
+
 # Setup
 node_modules/
-package-lock.json
+
+# Ignore files related to API keys
+*.env
 
 # Compiled
 client/dist/bundle.js
 build/
-
-# Config
-db/config.js
-./client/src/mapboxConfig.js
