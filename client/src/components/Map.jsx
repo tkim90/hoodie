@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import $ from 'jquery';
 import styled from 'styled-components';
+import config from '../../../mapboxConfig.js'
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
@@ -100,7 +101,7 @@ class Map extends Component {
         {...viewport}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={v => this.setState({viewport: v})}
-        mapboxApiAccessToken={process.env.MAPBOX_APP_TOKEN}
+        mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
         onClick={this.appendInput}
       >
         {this.state.inputForm.length !== 0 ?
