@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
-import config from '../mapboxConfig.js';
 import $ from 'jquery';
 import styled from 'styled-components';
+import config from '../../../mapboxConfig.js'
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
