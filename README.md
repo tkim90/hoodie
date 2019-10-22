@@ -1,5 +1,5 @@
 # Hoodie
-[Demo](https://i.imgur.com/IiqAVsF.gifv)
+![Demo](https://i.imgur.com/IiqAVsF.gif)
 
 The urban dictionary for neighborhoods. 
 > Add points of interests to share with your friends.
