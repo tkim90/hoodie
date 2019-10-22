@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import $ from 'jquery';
 import styled from 'styled-components';
-import config from '../../../mapboxConfig.js'
+import config from '../../../mapboxConfig.js';
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
@@ -15,13 +15,16 @@ const InputElement = styled.input`
 `;
 
 const MarkerText = styled.div`
-  font: 32px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 25px 'Poppins', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   white-space: normal !important;
   will-change: transform;
   text-align: left;
   color: white;
   user-select: none;
   font-weight: 900;
+  max-width: 150px;
+  word-wrap: break-word;
+  line-height: 104%;
   -webkit-text-stroke: 1px black;
 `;
 
@@ -30,8 +33,8 @@ class Map extends Component {
     super(props);
     this.state = {
       viewport: {
-        latitude: 37.5665,
-        longitude: 126.9780,
+        latitude: props.currentCity.lat,
+        longitude: props.currentCity.lng,
         zoom: 12.5,
         maxZoom: 16,
         bearing: 0,
@@ -52,15 +55,24 @@ class Map extends Component {
     this.removeInput = this.removeInput.bind(this);
   }
 
+  componentDidMount() {
+    const inputElement = $('#inputElement');
+    if (inputElement.length) {
+      inputElement.remove();
+    }
+  }
+
   appendInput({point, lngLat: [longitude, latitude]}) {
-    const newInputForm = this.state.inputForm;
-    newInputForm.push('input-form');
-    this.setState({
-      inputForm: newInputForm,
-      currCoords: [longitude, latitude],
-      xYpoint: point
-    });
-    $('#inputElement').focus();
+    if ($('#inputElement').length === 0) {
+      const newInputForm = this.state.inputForm;
+      newInputForm.push('input-form');
+      this.setState({
+        inputForm: newInputForm,
+        currCoords: [longitude, latitude],
+        xYpoint: point
+      });
+      $('#inputElement').focus();
+    }
   }
   
   onChangeInputHandler(e) {
