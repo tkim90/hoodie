@@ -1,8 +1,9 @@
 # Hoodie
+![Hoodie](https://imgur.com/y6iVM3d)
 The urban dictionary for neighborhoods. 
-> Draw on the current map based on category.
-> Add text to a region in the map to describe the neighborhood.
-> Share the map with your friends!
+> Add points of interests to share with your friends.
+> Navigate to different cities.
+> Share the map with your friends as an image or url!
 
 # Tech Stack
 Front End

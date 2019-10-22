@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import SearchCity from './SearchCity.jsx';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -39,8 +40,9 @@ const Category = styled.div`
 const Categories = (props) => {
   return (
     <Wrapper>
+      <SearchCity searchCity={props.searchCity}/>
       <Logo/>
-      <PickerArea>
+      {/* <PickerArea>
         <Category 
           style={{ backgroundColor: 'blue' }}
           onClick={props.setCategoryChoice}
@@ -71,7 +73,7 @@ const Categories = (props) => {
         >
           📷 Tourists
         </Category>
-      </PickerArea>
+      </PickerArea> */}
     </Wrapper>
   )
 }
