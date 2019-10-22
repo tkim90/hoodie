@@ -1,5 +1,6 @@
 # Hoodie
-![Hoodie](https://imgur.com/y6iVM3d)
+[Demo](https://i.imgur.com/IiqAVsF.gifv)
+
 The urban dictionary for neighborhoods. 
 > Add points of interests to share with your friends.
 > Navigate to different cities.
