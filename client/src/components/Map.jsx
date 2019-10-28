@@ -47,7 +47,7 @@ class Map extends Component {
       inputForm: [],
       currCoords: [],
       xYpoint: [],
-      geoJSON: []
+      geoJSONarray: []
     };
     this.addMarker = this.addMarker.bind(this);
     this.appendInput = this.appendInput.bind(this);
@@ -82,7 +82,6 @@ class Map extends Component {
 
   removeInput(e) {
     e.preventDefault();
-    this.addMarker(this.state.currCoords[0], this.state.currCoords[1]);
     const newGeoJSONpoint = {
       "type": "Feature",
       "geometry": {
@@ -93,16 +92,22 @@ class Map extends Component {
         "name": this.state.textValue
       }
     };
-    let newGeoJSON = this.state.geoJSON;
+    this.addMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
+    let newGeoJSON = this.state.geoJSONarray;
     newGeoJSON.push(newGeoJSONpoint);
-    this.setState( { geoJSON: newGeoJSON });
+    this.setState( { geoJSONarray: newGeoJSON });
     $(e.target).remove();
   }
 
-  addMarker(longitude, latitude) {
+  addMarker(longitude, latitude, geoJSON) {
     let newMarkers = this.state.markers;
     newMarkers.push([longitude, latitude]);
     this.setState({ markers: newMarkers });
+    fetch('/api/saveMarker', {
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(geoJSON)
+    })
   }
 
   render() {
@@ -124,7 +129,10 @@ class Map extends Component {
                 type='text'
                 key={i}
                 onChange={this.onChangeInputHandler}
-                style={{ left: `${this.state.xYpoint[0]}.px`, top: `${this.state.xYpoint[1]}px` }}
+                style={{ 
+                  left: `${this.state.xYpoint[0]}px`,
+                  top: `${this.state.xYpoint[1]}px`
+                }}
               />
             </form>
           )
@@ -134,7 +142,7 @@ class Map extends Component {
           this.state.markers.map((m, i) => {
             return (
               <Marker latitude={m[1]} longitude={m[0]} key={i} >
-                <MarkerText>{this.state.geoJSON.length ? this.state.geoJSON[i].properties.name : null}</MarkerText>
+                <MarkerText>{this.state.geoJSONarray.length ? this.state.geoJSONarray[i].properties.name : null}</MarkerText>
               </Marker>
             )
           }
