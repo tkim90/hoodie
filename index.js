@@ -15,7 +15,7 @@ app.use(express.static(__dirname + '/client/dist'));
 app.use('/assets', express.static(__dirname + '/client/src/assets'));
 
 app.post('/api/saveMarker', (req, res) => {
-  console.log(`geoJSON: ${JSON.stringify(req.body)}`)
+  console.log(`geoJSON: ${JSON.stringify(req.body)}`);
 })
 
 app.listen(PORT, () => {console.log(`Listening on ${PORT}!`)})

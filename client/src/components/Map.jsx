@@ -86,7 +86,7 @@ class Map extends Component {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": this.state.currCoords
+        "coordinates": this.state.currCoords,
       },
       "properties": {
         "name": this.state.textValue

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import config from '../../../mapboxConfig.js';
+import Loader from 'react-loader-spinner';
 // import Geocoder from '@mapbox/react-geocoder';
 
 const SearchBar = styled.input`
@@ -17,13 +18,13 @@ const SearchBar = styled.input`
 class SearchCity extends React.Component {
   constructor(props) {
     super(props);
-    this.handleSearch = this.handleSearch.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
 
+    this.handleChange = this.handleSearch.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.onSelect = this.onSelect.bind(this);
   }
 
-  handleSearch(e)  {
+  handleChange(e)  {
     this.props.searchCity(e.target.value);
   }
 
@@ -37,10 +38,20 @@ class SearchCity extends React.Component {
     console.log(value);
   }
 
+  fetchCityCoordinates() {
+
+  }
+
   render() {
+    const { isLoading } = this.props.isLoading;
+    
     return (
       <form onSubmit={this.handleSubmit}>
-        <SearchBar placeholder="Search city" onChange={this.handleSearch}/>
+        {isLoading ? 
+          <Loader type="TailSpin" color="#00BFFF" height={13} width={13} style={loaderStyle}/>
+          : null
+        }
+        <SearchBar placeholder="Search city" onChange={this.handleChange}/>
       </form>
     // <Geocoder
     //   accessToken={config.MAPBOX_APP_TOKEN}
