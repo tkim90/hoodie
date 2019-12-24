@@ -19,7 +19,7 @@ class SearchCity extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleSearch.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onSelect = this.onSelect.bind(this);
   }
@@ -42,15 +42,19 @@ class SearchCity extends React.Component {
 
   }
 
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   render() {
-    const { isLoading } = this.props.isLoading;
+    // const { isLoading } = this.props.isLoading;
     
     return (
       <form onSubmit={this.handleSubmit}>
-        {isLoading ? 
+        {/* {isLoading ? 
           <Loader type="TailSpin" color="#00BFFF" height={13} width={13} style={loaderStyle}/>
           : null
-        }
+        } */}
         <SearchBar placeholder="Search city" onChange={this.handleChange}/>
       </form>
     // <Geocoder
