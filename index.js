@@ -14,9 +14,8 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(express.static(__dirname + '/client/dist'));
 app.use('/assets', express.static(__dirname + '/client/src/assets'));
 
-app.get('/:city', (req, res) => {
-  const cityQuery = req.params.city.toLowerCase();
-  // const matches = cities.filter(city => city.name.toLowerCase().indexOf(cityQuery) >= 0)[1];   
-});
+app.post('/api/saveMarker', (req, res) => {
+  console.log(`geoJSON: ${JSON.stringify(req.body)}`);
+})
 
 app.listen(PORT, () => {console.log(`Listening on ${PORT}!`)})

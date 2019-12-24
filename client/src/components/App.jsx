@@ -2,6 +2,9 @@ import React from 'react';
 import Categories from './Categories.jsx';
 import Map from './Map.jsx';
 import $ from 'jquery';
+import lodash from 'lodash';
+
+const DEBOUNCE_DELAY = 500;
 
 class App extends React.Component {
   constructor(props) {
@@ -13,11 +16,12 @@ class App extends React.Component {
         name: 'San Francisco',
         lat: 37.778810345244956,
         lng: -122.42208050200567
-      }
+      },
+      isLoading: false,
     };
     this.setCategoryChoice = this.setCategoryChoice.bind(this);
     this.selectedCategory = this.state.selectedCategory;
-    this.searchCity = this.searchCity.bind(this);
+    this.searchCity = lodash.debounce(this.searchCity.bind(this), DEBOUNCE_DELAY);
   }
 
   componentDidMount() {
@@ -76,6 +80,7 @@ class App extends React.Component {
           style={{ position: 'absolute' }}
           setCategoryChoice={this.setCategoryChoice}
           searchCity={this.searchCity}
+          isLoading={this.isLoading}
         />
         <Map currentCity={this.state.currentCity}/>
       </div>

@@ -40,7 +40,10 @@ const Category = styled.div`
 const Categories = (props) => {
   return (
     <Wrapper>
-      <SearchCity searchCity={props.searchCity}/>
+      <SearchCity 
+        searchCity={props.searchCity}
+        isLoading={props.isLoading}
+      />
       <Logo/>
       {/* <PickerArea>
         <Category 
