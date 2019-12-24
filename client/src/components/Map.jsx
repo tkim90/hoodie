@@ -49,20 +49,16 @@ class Map extends Component {
       xYpoint: [],
       geoJSONarray: []
     };
-    this.addMarker = this.addMarker.bind(this);
-    this.appendInput = this.appendInput.bind(this);
+    this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    this.saveMarker = this.saveMarker.bind(this);
+    this.addInputElement = this.addInputElement.bind(this);
+    this.saveGeoJSON = this.saveGeoJSON.bind(this);
+    this.parseGeoJSON = this.parseGeoJSON.bind(this);
     this.onChangeInputHandler = this.onChangeInputHandler.bind(this);
-    this.removeInput = this.removeInput.bind(this);
+    this.removeInputElements = this.removeInputElements.bind(this);
   }
 
-  componentDidMount() {
-    const inputElement = $('#inputElement');
-    if (inputElement.length) {
-      inputElement.remove();
-    }
-  }
-
-  appendInput({point, lngLat: [longitude, latitude]}) {
+  addInputElement({point, lngLat: [longitude, latitude]}) {
     if ($('#inputElement').length === 0) {
       const newInputForm = this.state.inputForm;
       newInputForm.push('input-form');
@@ -80,9 +76,37 @@ class Map extends Component {
     this.setState( { textValue: e.target.value });
   }
 
-  removeInput(e) {
+  onSubmitHandler(e) {
     e.preventDefault();
-    const newGeoJSONpoint = {
+    const newGeoJSONpoint = this.parseGeoJSON();
+    this.saveGeoJSON(newGeoJSONpoint);
+    this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
+    $(e.target).remove();
+    // this.removeInputElements(e);
+  }
+
+  saveGeoJSON(newGeoJSONpoint) {
+    // saves GeoJSON to state.
+    let newGeoJSON = this.state.geoJSONarray;
+    newGeoJSON.push(newGeoJSONpoint);
+    this.setState( { geoJSONarray: newGeoJSON });
+  }
+
+  saveMarker(longitude, latitude, geoJSON) {
+    // Adds the text marker to the state/db.
+    let newMarkers = this.state.markers;
+    newMarkers.push([longitude, latitude]);
+    this.setState({ markers: newMarkers });
+    fetch('/api/saveMarker', {
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(geoJSON)
+    });
+  }
+
+  parseGeoJSON() {
+    // parses coordinate data as a GeoJSON point and returns it.
+    return {
       "type": "Feature",
       "geometry": {
         "type": "Point",
@@ -92,23 +116,41 @@ class Map extends Component {
         "name": this.state.textValue
       }
     };
-    this.addMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
-    let newGeoJSON = this.state.geoJSONarray;
-    newGeoJSON.push(newGeoJSONpoint);
-    this.setState( { geoJSONarray: newGeoJSON });
-    $(e.target).remove();
+  }
+  
+  removeInputElements(e) {
+    // adds listener to remove the input text field if clicked outside
+
+    // const inputElement = $('#inputElement');
+    // const formElement = $('#formElement');
+
+    
+
+    // function removeElements() {
+    //   inputElement.remove();
+    //   formElement.remove();
+    // }
   }
 
-  addMarker(longitude, latitude, geoJSON) {
-    let newMarkers = this.state.markers;
-    newMarkers.push([longitude, latitude]);
-    this.setState({ markers: newMarkers });
-    fetch('/api/saveMarker', {
-      method: 'post',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(geoJSON)
-    })
-  }
+  // removeInput(e) {
+  //   // Removes the text input element when text is entered and saves the text to the state + db.
+  //   e.preventDefault();
+  //   const newGeoJSONpoint = {
+  //     "type": "Feature",
+  //     "geometry": {
+  //       "type": "Point",
+  //       "coordinates": this.state.currCoords,
+  //     },
+  //     "properties": {
+  //       "name": this.state.textValue
+  //     }
+  //   };
+  //   this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
+  //   let newGeoJSON = this.state.geoJSONarray;
+  //   newGeoJSON.push(newGeoJSONpoint);
+  //   this.setState( { geoJSONarray: newGeoJSON });
+  //   $(e.target).remove();
+  // }
 
   render() {
     const { viewport } = this.state;
@@ -119,11 +161,11 @@ class Map extends Component {
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={v => this.setState({viewport: v})}
         mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
-        onClick={this.appendInput}
+        onClick={this.addInputElement}
       >
         {this.state.inputForm.length !== 0 ?
           this.state.inputForm.map((input, i) =>
-            <form key={i} onSubmit={this.removeInput}>
+            <form key={i} id='inputForm' onSubmit={this.onSubmitHandler}>
               <InputElement
                 id='inputElement'
                 type='text'
