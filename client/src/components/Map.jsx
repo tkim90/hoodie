@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
-import $ from 'jquery';
 import styled from 'styled-components';
 import config from '../../../mapboxConfig.js';
 
@@ -62,9 +61,7 @@ class Map extends Component {
     // 1. Add a text input form
     // 2. If a text input form is active, remove it
 
-    const inputElementExists = $('#inputElement').length !== 0;
-
-    if (inputElementExists) {
+    if (document.getElementById('inputElement')) {
       this.setState({
         inputFormActive: false,
       });
@@ -74,7 +71,7 @@ class Map extends Component {
         currCoords: [longitude, latitude],
         xYpoint: point
       });
-      $('#inputElement').focus();
+      document.getElementById('inputElement').focus();
     }
   }
   
