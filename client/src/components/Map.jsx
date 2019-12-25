@@ -125,26 +125,6 @@ class Map extends Component {
     };
   }
 
-  // removeInput(e) {
-  //   // Removes the text input element when text is entered and saves the text to the state + db.
-  //   e.preventDefault();
-  //   const newGeoJSONpoint = {
-  //     "type": "Feature",
-  //     "geometry": {
-  //       "type": "Point",
-  //       "coordinates": this.state.currCoords,
-  //     },
-  //     "properties": {
-  //       "name": this.state.textValue
-  //     }
-  //   };
-  //   this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
-  //   let newGeoJSON = this.state.geoJSONarray;
-  //   newGeoJSON.push(newGeoJSONpoint);
-  //   this.setState( { geoJSONarray: newGeoJSON });
-  //   $(e.target).remove();
-  // }
-
   render() {
     const { viewport } = this.state;
 
