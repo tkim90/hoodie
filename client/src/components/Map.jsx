@@ -58,7 +58,7 @@ class Map extends Component {
   }
 
   onClickHandler({point, lngLat: [longitude, latitude]}) {
-    // handle what to do when you click on a point in the map:
+    // Handle event when you click on a point in the map:
     // 1. Add a text input form
     // 2. If a text input form is active, remove it
 
@@ -86,14 +86,20 @@ class Map extends Component {
 
   onSubmitHandler(e) {
     e.preventDefault();
-    const newGeoJSONpoint = this.parseGeoJSON();
-    this.saveGeoJSON(newGeoJSONpoint);
-    this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
+
+    const inputElementValueIsNotEmpty = document.getElementById('inputElement').value !== '';
+
+    if (inputElementValueIsNotEmpty) {
+      const newGeoJSONpoint = this.parseGeoJSON();
+      this.saveGeoJSON(newGeoJSONpoint);
+      this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
+    }
+
     $(e.target).remove();
   }
 
   saveGeoJSON(newGeoJSONpoint) {
-    // saves GeoJSON to state.
+    // Saves GeoJSON to state.
     let newGeoJSON = this.state.geoJSONarray;
     newGeoJSON.push(newGeoJSONpoint);
     this.setState( { geoJSONarray: newGeoJSON });
@@ -112,7 +118,7 @@ class Map extends Component {
   }
 
   parseGeoJSON() {
-    // parses coordinate data as a GeoJSON point and returns it.
+    // Parses coordinate data as a GeoJSON point and returns it.
     return {
       "type": "Feature",
       "geometry": {
