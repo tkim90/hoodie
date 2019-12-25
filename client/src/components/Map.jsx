@@ -51,17 +51,25 @@ class Map extends Component {
     };
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
     this.saveMarker = this.saveMarker.bind(this);
-    this.addInputElement = this.addInputElement.bind(this);
+    this.onClickHandler = this.onClickHandler.bind(this);
     this.saveGeoJSON = this.saveGeoJSON.bind(this);
     this.parseGeoJSON = this.parseGeoJSON.bind(this);
     this.onChangeInputHandler = this.onChangeInputHandler.bind(this);
-    this.removeInputElements = this.removeInputElements.bind(this);
   }
 
-  addInputElement({point, lngLat: [longitude, latitude]}) {
-    if ($('#inputElement').length === 0) {
+  onClickHandler({point, lngLat: [longitude, latitude]}) {
+    // handle what to do when you click on a point in the map:
+    // 1. Add a text input form
+    // 2. If a text input form is active, remove it
+
+    const inputElementExists = $('#inputElement').length !== 0;
+
+    if (inputElementExists) {
+      $('#inputElement').remove();
+      $('#inputForm').remove();
+    } else {
       const newInputForm = this.state.inputForm;
-      newInputForm.push('input-form');
+      newInputForm.push('inputForm'); // ?
       this.setState({
         inputForm: newInputForm,
         currCoords: [longitude, latitude],
@@ -82,7 +90,6 @@ class Map extends Component {
     this.saveGeoJSON(newGeoJSONpoint);
     this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
     $(e.target).remove();
-    // this.removeInputElements(e);
   }
 
   saveGeoJSON(newGeoJSONpoint) {
@@ -97,11 +104,11 @@ class Map extends Component {
     let newMarkers = this.state.markers;
     newMarkers.push([longitude, latitude]);
     this.setState({ markers: newMarkers });
-    fetch('/api/saveMarker', {
-      method: 'post',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(geoJSON)
-    });
+    // fetch('/api/saveMarker', {
+    //   method: 'post',
+    //   headers: {'Content-Type':'application/json'},
+    //   body: JSON.stringify(geoJSON)
+    // });
   }
 
   parseGeoJSON() {
@@ -116,20 +123,6 @@ class Map extends Component {
         "name": this.state.textValue
       }
     };
-  }
-  
-  removeInputElements(e) {
-    // adds listener to remove the input text field if clicked outside
-
-    // const inputElement = $('#inputElement');
-    // const formElement = $('#formElement');
-
-    
-
-    // function removeElements() {
-    //   inputElement.remove();
-    //   formElement.remove();
-    // }
   }
 
   // removeInput(e) {
@@ -161,7 +154,7 @@ class Map extends Component {
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={v => this.setState({viewport: v})}
         mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
-        onClick={this.addInputElement}
+        onClick={this.onClickHandler}
       >
         {this.state.inputForm.length !== 0 ?
           this.state.inputForm.map((input, i) =>
