@@ -44,7 +44,7 @@ class Map extends Component {
       },
       markers: [],
       textValue: '',
-      inputForm: [],
+      inputFormActive: false,
       currCoords: [],
       xYpoint: [],
       geoJSONarray: []
@@ -65,13 +65,12 @@ class Map extends Component {
     const inputElementExists = $('#inputElement').length !== 0;
 
     if (inputElementExists) {
-      $('#inputElement').remove();
-      $('#inputForm').remove();
-    } else {
-      const newInputForm = this.state.inputForm;
-      newInputForm.push('inputForm'); // ?
       this.setState({
-        inputForm: newInputForm,
+        inputFormActive: false,
+      });
+    } else {
+      this.setState({
+        inputFormActive: true,
         currCoords: [longitude, latitude],
         xYpoint: point
       });
@@ -94,8 +93,7 @@ class Map extends Component {
       this.saveGeoJSON(newGeoJSONpoint);
       this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
     }
-
-    $(e.target).remove();
+    this.setState({ inputFormActive: false });
   }
 
   saveGeoJSON(newGeoJSONpoint) {
@@ -142,13 +140,11 @@ class Map extends Component {
         mapboxApiAccessToken={config.MAPBOX_APP_TOKEN}
         onClick={this.onClickHandler}
       >
-        {this.state.inputForm.length !== 0 ?
-          this.state.inputForm.map((input, i) =>
-            <form key={i} id='inputForm' onSubmit={this.onSubmitHandler}>
+        {this.state.inputFormActive ?
+            <form id='inputForm' onSubmit={this.onSubmitHandler}>
               <InputElement
                 id='inputElement'
                 type='text'
-                key={i}
                 onChange={this.onChangeInputHandler}
                 style={{ 
                   left: `${this.state.xYpoint[0]}px`,
@@ -156,7 +152,6 @@ class Map extends Component {
                 }}
               />
             </form>
-          )
         : null}
 
         {this.state.markers.length !== 0 ? 
