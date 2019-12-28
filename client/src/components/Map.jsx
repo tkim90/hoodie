@@ -48,6 +48,7 @@ class Map extends Component {
       xYpoint: [],
       geoJSONarray: []
     };
+
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
     this.saveMarker = this.saveMarker.bind(this);
     this.onClickHandler = this.onClickHandler.bind(this);
@@ -73,6 +74,8 @@ class Map extends Component {
       });
       document.getElementById('inputElement').focus();
     }
+
+    // document.getElementById('inputElement').addEventListener('onmouseover')
   }
   
   onChangeInputHandler(e) {
@@ -128,6 +131,9 @@ class Map extends Component {
 
   render() {
     const { viewport } = this.state;
+    let frame = {
+      translate: [0, 0],
+    };
 
     return (
       <MapGL
@@ -154,7 +160,7 @@ class Map extends Component {
         {this.state.markers.length !== 0 ? 
           this.state.markers.map((m, i) => {
             return (
-              <Marker latitude={m[1]} longitude={m[0]} key={i} >
+              <Marker id='markers' latitude={m[1]} longitude={m[0]} key={i} >
                 <MarkerText>{this.state.geoJSONarray.length ? this.state.geoJSONarray[i].properties.name : null}</MarkerText>
               </Marker>
             )
