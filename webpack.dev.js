@@ -7,7 +7,4 @@ module.exports = merge(common, {
   devServer: {
     contentBase: './client/dist',
   },
-  plugins: [
-    new Dotenv()
-  ],
 })

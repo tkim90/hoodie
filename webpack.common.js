@@ -6,6 +6,9 @@ module.exports = {
     filename: 'bundle.js',
     path: __dirname + '/client/dist'
   },
+  plugins: [
+    new Dotenv()
+  ],
   module : {
     rules : [
       {
