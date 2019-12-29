@@ -6,6 +6,7 @@ node_modules/
 
 # Ignore files related to API keys
 mapboxConfig.js
+.env
 
 # Compiled
 client/dist/bundle.js
