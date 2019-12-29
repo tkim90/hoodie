@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "webpack --config webpack.prod.js",
+    "build": "node ./create-env.js && webpack --config webpack.prod.js",
     "react-dev": "webpack-dev-server --config webpack.dev.js --watch",
     "server-dev": "nodemon index.js"
   },
