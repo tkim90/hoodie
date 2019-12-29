@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import config from '../../../mapboxConfig.js';
 import Loader from 'react-loader-spinner';
 // import Geocoder from '@mapbox/react-geocoder';
 
@@ -58,7 +57,7 @@ class SearchCity extends React.Component {
         <SearchBar placeholder="Search city" onChange={this.handleChange}/>
       </form>
     // <Geocoder
-    //   accessToken={config.MAPBOX_APP_TOKEN}
+    //   accessToken={process.env.MAPBOX_TOKEN}
     //   onSelect={this.onSelect}
     //   showLoader={true}
     // />

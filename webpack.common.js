@@ -10,7 +10,6 @@ module.exports = {
         test : /\.jsx?$/,
         exclude: /(node_modules)/,
         loader : 'babel-loader',
-        use: ["source-map-loader"],
         enforce: "pre",
         options: {
           presets: ['@babel/preset-react', '@babel/preset-env']
