@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/4701ccd6-8937-45c0-8301-279daea90840/deploy-status)](https://app.netlify.com/sites/hoodie-app/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4701ccd6-8937-45c0-8301-279daea90840/deploy-status)](https://hoodie-app.netlify.com/)
 
 # Hoodie
 ![Demo](https://i.imgur.com/IiqAVsF.gif)
