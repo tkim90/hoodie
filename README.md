@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4701ccd6-8937-45c0-8301-279daea90840/deploy-status)](https://app.netlify.com/sites/hoodie-app/deploys)
+
 # Hoodie
 ![Hoodie](https://imgur.com/y6iVM3d)
 The urban dictionary for neighborhoods. 
