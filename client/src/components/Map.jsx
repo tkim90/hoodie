@@ -18,7 +18,7 @@ const InputElement = styled.input`
 `;
 
 const MarkerText = styled.div`
-  font-family: 'Poppins', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
   white-space: normal !important;
   will-change: transform;
   text-align: left;
