@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Categories from './Categories.jsx';
-import Map from './Map.jsx';
+import BarLoader from "react-spinners/BarLoader";
 import lodash from 'lodash';
+const Map = React.lazy(() => import('./Map.jsx'));
 
 const DEBOUNCE_DELAY = 500;
+
+const override = `
+  top: 50%;
+  left: 50%;
+  border-color: white;
+`;
 
 class App extends React.Component {
   constructor(props) {
@@ -43,12 +50,20 @@ class App extends React.Component {
   render() {
     return (
       <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }}>
-        <Categories
-          style={{ position: 'absolute' }}
-          searchCity={this.searchCity}
-          isLoading={this.isLoading}
-        />
-        <Map currentCity={this.state.currentCity}/>
+        <Suspense fallback={
+          <BarLoader
+            css={override}
+            height={4}
+            width={100}
+          />
+        }>
+          <Categories
+            style={{ position: 'absolute' }}
+            searchCity={this.searchCity}
+            isLoading={this.isLoading}
+          />
+          <Map currentCity={this.state.currentCity}/>
+        </Suspense>
       </div>
     )
   }

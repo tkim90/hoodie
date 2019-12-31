@@ -41,9 +41,9 @@
     "react": "^16.10.1",
     "react-canvas-draw": "^1.0.2",
     "react-dom": "^16.10.1",
-    "react-loader-spinner": "^3.1.5",
     "react-map-gl": "^5.0.11",
     "react-moveable": "^0.16.3",
+    "react-spinners": "^0.7.2",
     "styled-components": "^4.4.0"
   }
 }
