@@ -10,18 +10,8 @@ const Wrapper = styled.div`
   z-index: 11;
   right: 3%;
   top: 30%;
-  border: 1px solid red;
-
-  ${media.desktop`
-    border: 1px solid red;
-  `}
-  
-  ${media.tablet`
-    border: 1px solid blue;
-  `}
 
   ${media.phone`
-    border: 1px solid green;
     height: 30px;
     width: 100%;
     top: 0%;
@@ -37,7 +27,6 @@ const Logo = styled.div`
 
   ${media.phone`
     display:none;
-    border: 1px solid green;
   `}
 `;
 
