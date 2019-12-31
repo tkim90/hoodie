@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
+import { media } from './media';
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
-  font-size: 30px;
   border: 3px solid black;
   z-index: 70;
   position: absolute;
   opacity: 1.0 !important;
   border-radius: 25px;
+  font-size: 30px;
+
+  ${media.phone`
+    font-size: 15px;
+  `}
 `;
 
 const MarkerText = styled.div`
-  font: 25px 'Poppins', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
   white-space: normal !important;
   will-change: transform;
   text-align: left;
@@ -24,6 +29,11 @@ const MarkerText = styled.div`
   word-wrap: break-word;
   line-height: 104%;
   -webkit-text-stroke: 1px black;
+  font-size: 30px;
+
+  ${media.phone`
+    font-size: 15px;
+  `}
 `;
 
 class Map extends Component {

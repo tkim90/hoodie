@@ -1,17 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import Loader from 'react-loader-spinner';
+import { media } from './media';
 // import Geocoder from '@mapbox/react-geocoder';
 
 const SearchBar = styled.input`
-  position: absolute;
   font-family: Helvetica, sans-serif;
   font-size: 20px;
   font-weight: bold;
-  z-index: 50;
   text-align: center;
-  width: 97%;
-  top: -30px;
+  width: 97.5%;
+
+  ${media.phone`
+    width: 100%;
+  `}
 `;
 
 class SearchCity extends React.Component {
@@ -39,10 +41,6 @@ class SearchCity extends React.Component {
 
   fetchCityCoordinates() {
 
-  }
-
-  componentDidMount() {
-    console.log(this.props);
   }
 
   render() {

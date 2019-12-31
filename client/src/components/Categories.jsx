@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchCity from './SearchCity.jsx';
+import { media } from './media';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -9,32 +10,24 @@ const Wrapper = styled.div`
   z-index: 11;
   right: 3%;
   top: 30%;
+
+  ${media.phone`
+    height: 30px;
+    width: 100%;
+    top: 0%;
+    right: 0%;
+  `}
 `;
 
 const Logo = styled.div`
-  position: relative;
-  content: url('../assets/logo.png');
-  width: 200px;
-  height: 85%;
-  z-index: 100;
+  content: url(../assets/logo.png);
   opacity: 0.8;
-`;
+  height: 86%;
+  width: 100.5%;
 
-const PickerArea = styled.div`
-  position: relative;
-  height: 90%;
-  vertical-align: center;
-  font-family: Helvetica, sans-serif;
-  font-size: 30px;
-  font-weight: bold;
-`;
-
-const Category = styled.div`
-  opacity: 0.75;
-  padding-left: 15px;
-  &:hover {
-    cursor: pointer;
-  }
+  ${media.phone`
+    display:none;
+  `}
 `;
 
 const Categories = (props) => {
@@ -45,38 +38,6 @@ const Categories = (props) => {
         isLoading={props.isLoading}
       />
       <Logo/>
-      {/* <PickerArea>
-        <Category 
-          style={{ backgroundColor: 'blue' }}
-          onClick={props.setCategoryChoice}
-        >
-          🤓 Techies
-        </Category>
-        <Category 
-          style={{ backgroundColor: 'purple' }}
-          onClick={props.setCategoryChoice}
-        >
-          🧔🏻 Hipsters
-        </Category>
-        <Category
-          style={{ backgroundColor: 'green' }}
-          onClick={props.setCategoryChoice}
-        >
-          💸 Rich
-        </Category>
-        <Category
-          style={{ backgroundColor: 'yellow' }}
-          onClick={props.setCategoryChoice}
-        >
-          💁🏻 Normies
-        </Category>
-        <Category
-          style={{ backgroundColor: 'red' }}
-          onClick={props.setCategoryChoice}
-        >
-          📷 Tourists
-        </Category>
-      </PickerArea> */}
     </Wrapper>
   )
 }

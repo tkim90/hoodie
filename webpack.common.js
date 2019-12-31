@@ -3,11 +3,12 @@ const Dotenv = require('dotenv-webpack');
 module.exports = {
   entry: __dirname + `/client/src/index.jsx`,
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
     path: __dirname + '/client/dist'
   },
   plugins: [
-    new Dotenv()
+    new Dotenv(),
   ],
   module : {
     rules : [
@@ -22,7 +23,10 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          'css-loader'
+        ],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -33,5 +37,12 @@ module.exports = {
         ],
       },
     ]
-  }
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: { test: /[\\/]node_modules[\\/]/, name: "vendors", chunks: "all" },
+      },
+    },
+  },
 };
