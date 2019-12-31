@@ -13,12 +13,10 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.div`
-  position: relative;
   content: url(../assets/logo.png);
-  width: 200px;
-  height: 85%;
-  z-index: 100;
   opacity: 0.8;
+  height: 86%;
+  width: 100.5%;
 `;
 
 const Categories = (props) => {

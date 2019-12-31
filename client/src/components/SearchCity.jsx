@@ -4,14 +4,11 @@ import Loader from 'react-loader-spinner';
 // import Geocoder from '@mapbox/react-geocoder';
 
 const SearchBar = styled.input`
-  position: absolute;
   font-family: Helvetica, sans-serif;
   font-size: 20px;
   font-weight: bold;
-  z-index: 50;
   text-align: center;
-  width: 97%;
-  top: -30px;
+  width: 97.5%;
 `;
 
 class SearchCity extends React.Component {
