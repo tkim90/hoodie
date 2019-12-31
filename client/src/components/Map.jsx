@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
-import { devices } from './devices';
+import { media } from './media';
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
@@ -11,18 +11,17 @@ const InputElement = styled.input`
   opacity: 1.0 !important;
   border-radius: 25px;
 
-  @media ${devices.laptop} {
-    max-width: 200px;
-    font-size: 30px;
-  }
-  @media ${devices.desktop} {
-    max-width: 300px;
-    font-size: 30px;
-  }
-  @media ${devices.mobileM} {
-    max-width: 150px;
-    font-size: 15px;
-  }
+  ${media.desktop`
+    border: 1px solid red;
+  `}
+  
+  ${media.tablet`
+    border: 1px solid blue;
+  `}
+
+  ${media.phone`
+    border: 1px solid green;
+  `}
 `;
 
 const MarkerText = styled.div`
@@ -38,16 +37,7 @@ const MarkerText = styled.div`
   line-height: 104%;
   -webkit-text-stroke: 1px black;
 
-  @media ${devices.laptop} {
-    max-width: 150px;
-    font-size: 30px;
-  }
-  @media ${devices.desktop} {
-    max-width: 150px;
-    font-size: 30px;
-  }
-  @media ${devices.mobileM} {
-    max-width: 150px;
+  ${media.phone} {
     font-size: 15px;
   }
 `;
