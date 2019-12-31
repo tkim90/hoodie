@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Loader from 'react-loader-spinner';
 import { media } from './media';
 // import Geocoder from '@mapbox/react-geocoder';
 
@@ -48,10 +47,6 @@ class SearchCity extends React.Component {
     
     return (
       <form onSubmit={this.handleSubmit}>
-        {/* {isLoading ? 
-          <Loader type="TailSpin" color="#00BFFF" height={13} width={13} style={loaderStyle}/>
-          : null
-        } */}
         <SearchBar placeholder="Search city" onChange={this.handleChange}/>
       </form>
     // <Geocoder

@@ -5,29 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+  <!-- <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' /> -->
+  <link rel="preload" as="style" href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' />
   <link rel="icon" href="./assets/houseEmoji.png">
   <title>Hoodie</title>
 </head>
 
 <style>
-  /* .brush { */
-    /* cursor: url('../src/assets/brushPointer.png'), auto; */
-    /* position: absolute;
-    height: 40px;
-    width: 40px;
-    background-image: url('../src/assets/brushPointer.png');
-    opacity: 0.75;
-    border-radius: 50%;
-    display: inline-block;
-    z-index: 50; */
-  /* } */
+  body {
+    background: gray;
+  }
 </style>
 
 <body>
   <div class='brush'></div>
   <div id='app'></div>
-  <!-- <script type="text/javascript" src="bundle.js"></script> -->
   <script type="text/javascript" src="main.bundle.js"></script>
   <script type="text/javascript" src="vendors.bundle.js"></script>
 </body>
