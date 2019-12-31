@@ -8,8 +8,7 @@
     "start": "node index.js",
     "build": "node ./create-env.js && webpack --config webpack.prod.js",
     "react-dev": "webpack-dev-server --config webpack.dev.js --watch",
-    "server-dev": "nodemon index.js",
-    "perf": "node_modules/.bin/webpack --config webpack.dev.js -p"
+    "server-dev": "nodemon index.js"
   },
   "keywords": [],
   "license": "ISC",
@@ -20,6 +19,7 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
     "morgan": "^1.9.1",
     "source-map-loader": "^0.2.4",
     "style-loader": "^1.0.0",

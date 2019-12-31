@@ -8,7 +8,7 @@ module.exports = {
     path: __dirname + '/client/dist'
   },
   plugins: [
-    new Dotenv(),
+    new Dotenv()
   ],
   module : {
     rules : [
