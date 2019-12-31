@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 const Logo = styled.div`
   position: relative;
-  content: url('../assets/logo.png');
+  content: url(../assets/logo.png);
   width: 200px;
   height: 85%;
   z-index: 100;
