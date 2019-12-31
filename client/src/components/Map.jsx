@@ -10,17 +10,10 @@ const InputElement = styled.input`
   position: absolute;
   opacity: 1.0 !important;
   border-radius: 25px;
-
-  ${media.desktop`
-    border: 1px solid red;
-  `}
-  
-  ${media.tablet`
-    border: 1px solid blue;
-  `}
+  font-size: 30px;
 
   ${media.phone`
-    border: 1px solid green;
+    font-size: 15px;
   `}
 `;
 
@@ -36,10 +29,11 @@ const MarkerText = styled.div`
   word-wrap: break-word;
   line-height: 104%;
   -webkit-text-stroke: 1px black;
+  font-size: 30px;
 
-  ${media.phone} {
+  ${media.phone`
     font-size: 15px;
-  }
+  `}
 `;
 
 class Map extends Component {
