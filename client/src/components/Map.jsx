@@ -155,7 +155,7 @@ class Map extends Component {
                 id='inputElement'
                 type='text'
                 onChange={this.onChangeInputHandler}
-                style={{ 
+                style={{
                   left: `${this.state.xYpoint[0]}px`,
                   top: `${this.state.xYpoint[1]}px`
                 }}
