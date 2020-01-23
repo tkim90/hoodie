@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 import { media } from './media';
+import config from '../../../mapboxConfig.js';
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
@@ -60,10 +61,33 @@ class Map extends Component {
 
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
     this.saveMarker = this.saveMarker.bind(this);
+    this.onMouseOverHandler = this.onMouseOverHandler.bind(this);
+    this.onMouseLeaveHandler = this.onMouseLeaveHandler.bind(this);
     this.onClickHandler = this.onClickHandler.bind(this);
     this.saveGeoJSON = this.saveGeoJSON.bind(this);
     this.parseGeoJSON = this.parseGeoJSON.bind(this);
     this.onChangeInputHandler = this.onChangeInputHandler.bind(this);
+  }
+
+  componentDidMount() {
+    // function addMarkerMouseOverStyle() {
+    //   console.log("hey, i'm mousing over a marker.")
+    // }
+
+    // let currentMarker = document.querySelector('.marker') ? document.querySelector('.marker') : null;
+    // if (currentMarker) {
+    //   currentMarker.addEventListener('mouseover', addMarkerMouseOverStyle);
+    // }
+  }
+
+  onMouseOverHandler(e) {
+    console.log("Hey, I'm mousing over a marker...")
+    e.target.setAttribute('style', 'border: blue solid 1px')
+  }
+
+  onMouseLeaveHandler(e) {
+    console.log("I'm LEAVING...")
+    e.target.style.border = null;
   }
 
   onClickHandler({point, lngLat: [longitude, latitude]}) {
@@ -146,7 +170,8 @@ class Map extends Component {
         {...viewport}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={v => this.setState({viewport: v})}
-        mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
+        // mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
+        mapboxApiAccessToken={config.MAPBOX_TOKEN}
         onClick={this.onClickHandler}
       >
         {this.state.inputFormActive ?
@@ -166,8 +191,13 @@ class Map extends Component {
         {this.state.markers.length !== 0 ? 
           this.state.markers.map((m, i) => {
             return (
-              <Marker id='markers' latitude={m[1]} longitude={m[0]} key={i} >
-                <MarkerText>{this.state.geoJSONarray.length ? this.state.geoJSONarray[i].properties.name : null}</MarkerText>
+              <Marker className='marker' latitude={m[1]} longitude={m[0]} key={i}>
+                <MarkerText 
+                  onMouseOver={this.onMouseOverHandler}
+                  onMouseLeave={this.onMouseLeaveHandler}
+                >
+                  {this.state.geoJSONarray.length ? this.state.geoJSONarray[i].properties.name : null}
+                </MarkerText>
               </Marker>
             )
           }
