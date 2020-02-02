@@ -1,25 +1,29 @@
 -- psql -U $ROOT_USER -a -f db/postgres/schema.sql
 
+DROP DATABASE IF EXISTS hoodie;
 CREATE DATABASE hoodie;
 
 \connect hoodie;
 
-CREATE TABLE markers (
+CREATE TABLE city (
   id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
-  city VARCHAR(40) NOT NULL,
+  name VARCHAR(40) NOT NULL,
   coordinates VARCHAR(50) NOT NULL,
-  marker_text VARCHAR(200) NOT NULL,
-  group_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
-  FOREIGN KEY (group_id) REFERENCES restaurants (id) MATCH FULL,
-  -- created_at
-  -- updated_at
   UNIQUE (id)
 );
 
-CREATE TABLE groups (
+CREATE TABLE marker_group (
   id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
-  name VARCHAR(40) NOT NULL,
-  city VARCHAR(40) NOT NULL
+  city_id INTEGER REFERENCES city(id),
+  name VARCHAR(60) NOT NULL,
+  url VARCHAR(60) NOT NULL,
+  UNIQUE (id)
 );
 
--- ALTER TABLE reservations ADD CONSTRAINT fk_reservations FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) MATCH FULL;
+CREATE TABLE marker (
+  id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
+  marker_group_id INTEGER REFERENCES marker_group(id),
+  coordinates VARCHAR(50) NOT NULL,
+  marker_text VARCHAR(200) NOT NULL,
+  UNIQUE (id)
+);
