@@ -8,7 +8,7 @@
     "start": "node index.js",
     "build": "node ./create-env.js && webpack --config webpack.prod.js",
     "react-dev": "webpack-dev-server --config webpack.dev.js --watch",
-    "server-dev": "nodemon index.js"
+    "server-dev": "nodemon ./api/index.js"
   },
   "keywords": [],
   "license": "ISC",
@@ -37,6 +37,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "mapbox-gl": "^1.4.1",
+    "pg": "^7.18.1",
     "prop-types": "^15.7.2",
     "react": "^16.10.1",
     "react-canvas-draw": "^1.0.2",

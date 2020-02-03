@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 import { media } from './media';
-import config from '../../../mapboxConfig.js';
+import config from '../../../mapboxConfig';
+import API_ROOT from '../../../api-config';
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
@@ -37,6 +38,14 @@ const MarkerText = styled.div`
   `}
 `;
 
+const DeleteButton = styled.div`
+  width: 20px;
+  height: 20px;
+  background: black;
+  border-radius: 50%;
+  border: #999999 solid 1px;
+`;
+
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -56,7 +65,8 @@ class Map extends Component {
       inputFormActive: false,
       currCoords: [],
       xYpoint: [],
-      geoJSONarray: []
+      geoJSONarray: [],
+      hovered: false
     };
 
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
@@ -69,25 +79,16 @@ class Map extends Component {
     this.onChangeInputHandler = this.onChangeInputHandler.bind(this);
   }
 
-  componentDidMount() {
-    // function addMarkerMouseOverStyle() {
-    //   console.log("hey, i'm mousing over a marker.")
-    // }
-
-    // let currentMarker = document.querySelector('.marker') ? document.querySelector('.marker') : null;
-    // if (currentMarker) {
-    //   currentMarker.addEventListener('mouseover', addMarkerMouseOverStyle);
-    // }
-  }
-
   onMouseOverHandler(e) {
-    console.log("Hey, I'm mousing over a marker...")
-    e.target.setAttribute('style', 'border: blue solid 1px')
+    e.target.setAttribute('style', 'border: blue solid 1px;');
   }
 
   onMouseLeaveHandler(e) {
-    console.log("I'm LEAVING...")
     e.target.style.border = null;
+  }
+
+  markerOnClickHandler(e) {
+
   }
 
   onClickHandler({point, lngLat: [longitude, latitude]}) {
@@ -134,18 +135,21 @@ class Map extends Component {
     let newGeoJSON = this.state.geoJSONarray;
     newGeoJSON.push(newGeoJSONpoint);
     this.setState( { geoJSONarray: newGeoJSON });
-  }
+  };
 
   saveMarker(longitude, latitude, geoJSON) {
     // Adds the text marker to the state/db.
     let newMarkers = this.state.markers;
     newMarkers.push([longitude, latitude]);
     this.setState({ markers: newMarkers });
-    // fetch('/api/saveMarker', {
-    //   method: 'post',
-    //   headers: {'Content-Type':'application/json'},
-    //   body: JSON.stringify(geoJSON)
-    // });
+
+    fetch(`${API_ROOT}/saveMarker`, {
+      method: 'post',
+      headers: {
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(geoJSON),
+    });
   }
 
   parseGeoJSON() {
@@ -163,7 +167,7 @@ class Map extends Component {
   }
 
   render() {
-    const { viewport } = this.state;
+    const { viewport, hovered } = this.state;
 
     return (
       <MapGL
