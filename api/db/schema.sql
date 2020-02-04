@@ -24,6 +24,6 @@ CREATE TABLE marker (
   id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
   -- marker_group_id INTEGER REFERENCES marker_group(id),
   coordinates POINT NOT NULL,
-  marker_text VARCHAR(200) NOT NULL,
+  text VARCHAR(200) NOT NULL,
   UNIQUE (id)
 );

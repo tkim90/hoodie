@@ -60,23 +60,31 @@ class Map extends Component {
         width: window.innerWidth,
         height: window.innerHeight,
       },
-      markers: [],
-      textValue: '',
+      text: '',
       inputFormActive: false,
-      currCoords: [],
-      xYpoint: [],
-      geoJSONarray: [],
+      currentMarkerCoordinates: [],
+      windowXyPoint: [],
+      markers: [],
       hovered: false
     };
 
     this.onSubmitHandler = this.onSubmitHandler.bind(this);
-    this.saveMarker = this.saveMarker.bind(this);
     this.onMouseOverHandler = this.onMouseOverHandler.bind(this);
     this.onMouseLeaveHandler = this.onMouseLeaveHandler.bind(this);
     this.onClickHandler = this.onClickHandler.bind(this);
     this.saveGeoJSON = this.saveGeoJSON.bind(this);
     this.parseGeoJSON = this.parseGeoJSON.bind(this);
     this.onChangeInputHandler = this.onChangeInputHandler.bind(this);
+  }
+
+  componentDidMount() {
+    fetch(`${API_ROOT}/group/markers`)
+      .then(response => response.json())
+      .then(markers =>
+        this.setState({
+          markers
+        })
+      )
   }
 
   onMouseOverHandler(e) {
@@ -103,8 +111,8 @@ class Map extends Component {
     } else {
       this.setState({
         inputFormActive: true,
-        currCoords: [longitude, latitude],
-        xYpoint: point
+        currentMarkerCoordinates: [longitude, latitude],
+        windowXyPoint: point
       });
       document.getElementById('inputElement').focus();
     }
@@ -114,7 +122,7 @@ class Map extends Component {
   
   onChangeInputHandler(e) {
     e.preventDefault();
-    this.setState( { textValue: e.target.value });
+    this.setState( { text: e.target.value });
   }
 
   onSubmitHandler(e) {
@@ -123,51 +131,75 @@ class Map extends Component {
     const inputElementValueIsNotEmpty = document.getElementById('inputElement').value !== '';
 
     if (inputElementValueIsNotEmpty) {
-      const newGeoJSONpoint = this.parseGeoJSON();
-      this.saveGeoJSON(newGeoJSONpoint);
-      this.saveMarker(this.state.currCoords[0], this.state.currCoords[1], newGeoJSONpoint);
+      const newGeoJSONobject = this.parseGeoJSON(this.state.currentMarkerCoordinates, this.state.text);
+      this.saveGeoJSON(newGeoJSONobject);
     }
     this.setState({ inputFormActive: false });
   }
 
-  saveGeoJSON(newGeoJSONpoint) {
+  saveGeoJSON(newGeoJSONobject) {
     // Saves GeoJSON to state.
-    let newGeoJSON = this.state.geoJSONarray;
-    newGeoJSON.push(newGeoJSONpoint);
-    this.setState( { geoJSONarray: newGeoJSON });
-  };
 
-  saveMarker(longitude, latitude, geoJSON) {
-    // Adds the text marker to the state/db.
+    // geoJSON data from server (postgres):
+    // {
+    //   "coordinates": {
+    //       "x": -122.386697379757,
+    //       "y": 37.7940630457069
+    //   },
+    //   "text": "sd"
+    // }
+    
+    // geoJSON created client-side:
+    // {
+    //   "type": "Feature",
+    //   "geometry": {
+    //     "type": "Point",
+    //     "coordinates": [123, 456],
+    //   },
+    //   "properties": {
+    //     "name": "Hello World"
+    //   }
+    // }
+
+    // convert geoJSONobject to postgres output format
+    const markerData = {
+      coordinates: {
+        x: newGeoJSONobject.geometry.coordinates[0],
+        y: newGeoJSONobject.geometry.coordinates[1],
+      },
+      text: newGeoJSONobject.properties.name
+    }
+
     let newMarkers = this.state.markers;
-    newMarkers.push([longitude, latitude]);
-    this.setState({ markers: newMarkers });
+    newMarkers.push(markerData);
 
-    fetch(`${API_ROOT}/saveMarker`, {
+    this.setState( { markers: newMarkers });
+
+    fetch(`${API_ROOT}/markers`, {
       method: 'post',
       headers: {
         'Content-Type':'application/json',
       },
-      body: JSON.stringify(geoJSON),
+      body: JSON.stringify(newGeoJSONobject),
     });
-  }
+  };
 
-  parseGeoJSON() {
+  parseGeoJSON(currentCoordinates, text) {
     // Parses coordinate data as a GeoJSON point and returns it.
     return {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": this.state.currCoords,
+        "coordinates": currentCoordinates,
       },
       "properties": {
-        "name": this.state.textValue
+        "name": text
       }
     };
   }
 
   render() {
-    const { viewport, hovered } = this.state;
+    const { viewport, hovered, markers } = this.state;
 
     return (
       <MapGL
@@ -185,22 +217,26 @@ class Map extends Component {
                 type='text'
                 onChange={this.onChangeInputHandler}
                 style={{
-                  left: `${this.state.xYpoint[0]}px`,
-                  top: `${this.state.xYpoint[1]}px`
+                  left: `${this.state.windowXyPoint[0]}px`,
+                  top: `${this.state.windowXyPoint[1]}px`
                 }}
               />
             </form>
         : null}
 
-        {this.state.markers.length !== 0 ? 
-          this.state.markers.map((m, i) => {
+        {markers.length !== 0 ? 
+          markers.map((geoJson, i) => {
+            const longitude = geoJson.coordinates.x;
+            const latitude = geoJson.coordinates.y;
+            const text = geoJson.text;
+
             return (
-              <Marker className='marker' latitude={m[1]} longitude={m[0]} key={i}>
+              <Marker className='marker' latitude={latitude} longitude={longitude} key={i}>
                 <MarkerText 
                   onMouseOver={this.onMouseOverHandler}
                   onMouseLeave={this.onMouseLeaveHandler}
                 >
-                  {this.state.geoJSONarray.length ? this.state.geoJSONarray[i].properties.name : null}
+                  {text}
                 </MarkerText>
               </Marker>
             )
