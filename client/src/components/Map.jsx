@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 import { media } from './media';
-import config from '../../../mapboxConfig';
-import API_ROOT from '../../../api-config';
+import config from '../../mapboxConfig'
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
@@ -77,15 +76,15 @@ class Map extends Component {
     this.onChangeInputHandler = this.onChangeInputHandler.bind(this);
   }
 
-  componentDidMount() {
-    fetch(`${API_ROOT}/group/markers`)
-      .then(response => response.json())
-      .then(markers =>
-        this.setState({
-          markers
-        })
-      )
-  }
+  // componentDidMount() {
+  //   fetch(`${API_ROOT}/group/markers`)
+  //     .then(response => response.json())
+  //     .then(markers =>
+  //       this.setState({
+  //         markers
+  //       })
+  //     )
+  // }
 
   onMouseOverHandler(e) {
     e.target.setAttribute('style', 'border: blue solid 1px;');
