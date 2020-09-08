@@ -14,7 +14,7 @@ CREATE TABLE city (
 
 CREATE TABLE marker_group (
   id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
-  -- city_id INTEGER REFERENCES city(id),
+  city_id INTEGER REFERENCES city(id),
   name VARCHAR(60) NOT NULL,
   url VARCHAR(60) NOT NULL,
   UNIQUE (id)
@@ -22,7 +22,7 @@ CREATE TABLE marker_group (
 
 CREATE TABLE marker (
   id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,
-  -- marker_group_id INTEGER REFERENCES marker_group(id),
+  marker_group_id INTEGER REFERENCES marker_group(id),
   coordinates POINT NOT NULL,
   text VARCHAR(200) NOT NULL,
   UNIQUE (id)

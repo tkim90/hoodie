@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 import { media } from './media';
-import config from '../../mapboxConfig'
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
   border: 3px solid black;
   z-index: 70;
   position: absolute;
-  opacity: 1.0 !important;
+  opacity: 1 !important;
   border-radius: 25px;
   font-size: 30px;
 
@@ -45,98 +44,72 @@ const DeleteButton = styled.div`
   border: #999999 solid 1px;
 `;
 
-class Map extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewport: {
-        latitude: props.currentCity.lat,
-        longitude: props.currentCity.lng,
-        zoom: 12.5,
-        maxZoom: 16,
-        bearing: 0,
-        pitch: 0,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      },
-      text: '',
-      inputFormActive: false,
-      currentMarkerCoordinates: [],
-      windowXyPoint: [],
-      markers: [],
-      hovered: false
-    };
+const Map = ({ currentCity }) => {
+  console.log(process.env.NODE_ENV);
+  const initialViewport = {
+    // latitude: currentCity.lat,
+    // longitude: currentCity.lng,
+    latitude: 37.778810345244956,
+    longitude: -122.42208050200567,
+    zoom: 12.5,
+    maxZoom: 16,
+    bearing: 0,
+    pitch: 0,
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+  const [viewport, setViewport] = useState(initialViewport);
+  const [text, setText] = useState('');
+  const [inputFormActive, setInputFormActive] = useState('');
+  const [currentMarkerCoordinates, setCurrentMarkerCoordinates] = useState([]);
+  const [windowXyPoint, setWindowXyPoint] = useState([]);
+  const [markers, setMarkers] = useState([]);
+  const [hovered, setHovered] = useState(false);
 
-    this.onSubmitHandler = this.onSubmitHandler.bind(this);
-    this.onMouseOverHandler = this.onMouseOverHandler.bind(this);
-    this.onMouseLeaveHandler = this.onMouseLeaveHandler.bind(this);
-    this.onClickHandler = this.onClickHandler.bind(this);
-    this.saveGeoJSON = this.saveGeoJSON.bind(this);
-    this.parseGeoJSON = this.parseGeoJSON.bind(this);
-    this.onChangeInputHandler = this.onChangeInputHandler.bind(this);
-  }
-
-  // componentDidMount() {
-  //   fetch(`${API_ROOT}/group/markers`)
-  //     .then(response => response.json())
-  //     .then(markers =>
-  //       this.setState({
-  //         markers
-  //       })
-  //     )
-  // }
-
-  onMouseOverHandler(e) {
+  const onMouseOverHandler = (e) => {
     e.target.setAttribute('style', 'border: blue solid 1px;');
-  }
+  };
 
-  onMouseLeaveHandler(e) {
+  const onMouseLeaveHandler = (e) => {
     e.target.style.border = null;
-  }
+  };
 
-  markerOnClickHandler(e) {
+  // markerOnClickHandler= (e) =>{}
 
-  }
-
-  onClickHandler({point, lngLat: [longitude, latitude]}) {
-    // Handle event when you click on a point in the map:
+  const onClickHandler = ({ point, lngLat: [longitude, latitude] }) => {
+    // Handle event when you click const on a point in the map:
     // 1. Add a text input form
     // 2. If a text input form is active, remove it
 
     if (document.getElementById('inputElement')) {
-      this.setState({
-        inputFormActive: false,
-      });
+      setInputFormActive(false);
     } else {
-      this.setState({
-        inputFormActive: true,
-        currentMarkerCoordinates: [longitude, latitude],
-        windowXyPoint: point
-      });
+      setInputFormActive(true);
+      setCurrentMarkerCoordinates([longitude, latitude]);
+      setWindowXyPoint(point);
       document.getElementById('inputElement').focus();
     }
-
     // document.getElementById('inputElement').addEventListener('onmouseover')
-  }
-  
-  onChangeInputHandler(e) {
-    e.preventDefault();
-    this.setState( { text: e.target.value });
-  }
+  };
 
-  onSubmitHandler(e) {
+  const onChangeInputHandler = (e) => {
+    e.preventDefault();
+    setText(e.target.value);
+  };
+
+  const onSubmitHandler = (e) => {
     e.preventDefault();
 
     const inputElementValueIsNotEmpty = document.getElementById('inputElement').value !== '';
 
     if (inputElementValueIsNotEmpty) {
-      const newGeoJSONobject = this.parseGeoJSON(this.state.currentMarkerCoordinates, this.state.text);
-      this.saveGeoJSON(newGeoJSONobject);
+      const newGeoJSONobject = parseGeoJSON(currentMarkerCoordinates, text);
+      saveGeoJSON(newGeoJSONobject);
     }
-    this.setState({ inputFormActive: false });
-  }
+    setInputFormActive(false);
+  };
 
-  saveGeoJSON(newGeoJSONobject) {
+  const saveGeoJSON = (newGeoJSONobject) => {
     // Saves GeoJSON to state.
 
     // geoJSON data from server (postgres):
@@ -147,7 +120,7 @@ class Map extends Component {
     //   },
     //   "text": "sd"
     // }
-    
+
     // geoJSON created client-side:
     // {
     //   "type": "Feature",
@@ -166,86 +139,76 @@ class Map extends Component {
         x: newGeoJSONobject.geometry.coordinates[0],
         y: newGeoJSONobject.geometry.coordinates[1],
       },
-      text: newGeoJSONobject.properties.name
-    }
+      text: newGeoJSONobject.properties.name,
+    };
 
-    let newMarkers = this.state.markers;
+    let newMarkers = markers;
     newMarkers.push(markerData);
 
-    this.setState( { markers: newMarkers });
+    setMarkers(newMarkers);
 
-    fetch(`${API_ROOT}/markers`, {
+    fetch(`${process.env.API_URL}/markers`, {
       method: 'post',
       headers: {
-        'Content-Type':'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(newGeoJSONobject),
     });
   };
 
-  parseGeoJSON(currentCoordinates, text) {
+  const parseGeoJSON = (currentCoordinates, text) => {
     // Parses coordinate data as a GeoJSON point and returns it.
     return {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": currentCoordinates,
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: currentCoordinates,
       },
-      "properties": {
-        "name": text
-      }
+      properties: {
+        name: text,
+      },
     };
-  }
+  };
 
-  render() {
-    const { viewport, hovered, markers } = this.state;
+  return (
+    <MapGL
+      {...viewport}
+      mapStyle="mapbox://styles/mapbox/dark-v9"
+      onViewportChange={(v) => setViewport(v)}
+      mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
+      onClick={onClickHandler}
+    >
+      {inputFormActive ? (
+        <form id="inputForm" onSubmit={onSubmitHandler}>
+          <InputElement
+            id="inputElement"
+            type="text"
+            onChange={onChangeInputHandler}
+            style={{
+              left: `${windowXyPoint[0]}px`,
+              top: `${windowXyPoint[1]}px`,
+            }}
+          />
+        </form>
+      ) : null}
 
-    return (
-      <MapGL
-        {...viewport}
-        mapStyle="mapbox://styles/mapbox/dark-v9"
-        onViewportChange={v => this.setState({viewport: v})}
-        // mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
-        mapboxApiAccessToken={config.MAPBOX_TOKEN}
-        onClick={this.onClickHandler}
-      >
-        {this.state.inputFormActive ?
-            <form id='inputForm' onSubmit={this.onSubmitHandler}>
-              <InputElement
-                id='inputElement'
-                type='text'
-                onChange={this.onChangeInputHandler}
-                style={{
-                  left: `${this.state.windowXyPoint[0]}px`,
-                  top: `${this.state.windowXyPoint[1]}px`
-                }}
-              />
-            </form>
-        : null}
-
-        {markers.length !== 0 ? 
-          markers.map((geoJson, i) => {
+      {markers.length !== 0
+        ? markers.map((geoJson, i) => {
             const longitude = geoJson.coordinates.x;
             const latitude = geoJson.coordinates.y;
             const text = geoJson.text;
 
             return (
-              <Marker className='marker' latitude={latitude} longitude={longitude} key={i}>
-                <MarkerText 
-                  onMouseOver={this.onMouseOverHandler}
-                  onMouseLeave={this.onMouseLeaveHandler}
-                >
+              <Marker className="marker" latitude={latitude} longitude={longitude} key={i}>
+                <MarkerText onMouseOver={onMouseOverHandler} onMouseLeave={onMouseLeaveHandler}>
                   {text}
                 </MarkerText>
               </Marker>
-            )
-          }
-          )
-          : null
-        }
-      </MapGL>
-    );
-  }
-}
+            );
+          })
+        : null}
+    </MapGL>
+  );
+};
 
 export default Map;

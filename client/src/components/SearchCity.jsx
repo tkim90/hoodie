@@ -15,47 +15,21 @@ const SearchBar = styled.input`
   `}
 `;
 
-class SearchCity extends React.Component {
-  constructor(props) {
-    super(props);
+const SearchCity = ({ searchCity }) => {
+  const handleChange = (e) => searchCity(e.target.value);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onSelect = this.onSelect.bind(this);
-  }
-
-  handleChange(e)  {
-    this.props.searchCity(e.target.value);
-  }
-
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`Submitted form.`)
-  }
+    console.log(`Submitted form.`);
+  };
 
-  onSelect(value) {
-    // this.setState({ value });
-    console.log(value);
-  }
+  const onSelect = (value) => console.log(value);
 
-  fetchCityCoordinates() {
-
-  }
-
-  render() {
-    // const { isLoading } = this.props.isLoading;
-    
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <SearchBar placeholder="Search city" onChange={this.handleChange}/>
-      </form>
-    // <Geocoder
-    //   accessToken={process.env.MAPBOX_TOKEN}
-    //   onSelect={this.onSelect}
-    //   showLoader={true}
-    // />
-    )
-  }
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <SearchBar placeholder="Search city" onChange={handleChange} />
+    </form>
+  );
+};
 
 export default SearchCity;

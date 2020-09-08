@@ -30,16 +30,13 @@ const Logo = styled.div`
   `}
 `;
 
-const Categories = (props) => {
+const Categories = ({ searchCity, isLoading }) => {
   return (
     <Wrapper>
-      <SearchCity 
-        searchCity={props.searchCity}
-        isLoading={props.isLoading}
-      />
-      <Logo/>
+      <SearchCity searchCity={searchCity} isLoading={isLoading} />
+      <Logo />
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Categories;
