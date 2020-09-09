@@ -5,8 +5,7 @@
 node_modules/
 
 # Ignore files related to API keys
-mapboxConfig.js
-.env
+*.env
 local.env
 
 # Compiled
