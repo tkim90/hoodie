@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
-import { media } from './media';
 
 const InputElement = styled.input`
   font-family: Helveitca Neue, sans-serif;
@@ -11,10 +10,6 @@ const InputElement = styled.input`
   opacity: 1 !important;
   border-radius: 25px;
   font-size: 30px;
-
-  ${media.phone`
-    font-size: 15px;
-  `}
 `;
 
 const MarkerText = styled.div`
@@ -30,10 +25,6 @@ const MarkerText = styled.div`
   line-height: 104%;
   -webkit-text-stroke: 1px black;
   font-size: 30px;
-
-  ${media.phone`
-    font-size: 15px;
-  `}
 `;
 
 const DeleteButton = styled.div`
@@ -45,7 +36,6 @@ const DeleteButton = styled.div`
 `;
 
 const Map = ({ currentCity }) => {
-  console.log(process.env.NODE_ENV);
   const initialViewport = {
     // latitude: currentCity.lat,
     // longitude: currentCity.lng,
@@ -58,12 +48,23 @@ const Map = ({ currentCity }) => {
     width: window.innerWidth,
     height: window.innerHeight,
   };
+
+  interface Marker {
+    x: number;
+    y: number;
+  }
+
+  interface IMarkers {
+    coordinates: Marker;
+    text: string;
+  }
+
   const [viewport, setViewport] = useState(initialViewport);
   const [text, setText] = useState('');
-  const [inputFormActive, setInputFormActive] = useState('');
-  const [currentMarkerCoordinates, setCurrentMarkerCoordinates] = useState([]);
+  const [inputFormActive, setInputFormActive] = useState<boolean | null>(null);
+  const [currentMarkerCoordinates, setCurrentMarkerCoordinates] = useState<number[] | null>([]);
   const [windowXyPoint, setWindowXyPoint] = useState([]);
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState<IMarkers[] | null>(null);
   const [hovered, setHovered] = useState(false);
 
   const onMouseOverHandler = (e) => {
@@ -82,12 +83,13 @@ const Map = ({ currentCity }) => {
     // 2. If a text input form is active, remove it
 
     if (document.getElementById('inputElement')) {
-      setInputFormActive(false);
+      setInputFormActive: false;
     } else {
       setInputFormActive(true);
       setCurrentMarkerCoordinates([longitude, latitude]);
       setWindowXyPoint(point);
-      document.getElementById('inputElement').focus();
+      const inputElement: HTMLElement | null = document.getElementById('inputElement');
+      inputElement?.focus();
     }
     // document.getElementById('inputElement').addEventListener('onmouseover')
   };
@@ -100,7 +102,9 @@ const Map = ({ currentCity }) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    const inputElementValueIsNotEmpty = document.getElementById('inputElement').value !== '';
+    const inputElementValue: HTMLElement | null = document.getElementById('inputElement');
+    const inputElementValueIsNotEmpty: boolean =
+      (inputElementValue as HTMLInputElement).value !== '';
 
     if (inputElementValueIsNotEmpty) {
       const newGeoJSONobject = parseGeoJSON(currentMarkerCoordinates, text);
@@ -143,7 +147,7 @@ const Map = ({ currentCity }) => {
     };
 
     let newMarkers = markers;
-    newMarkers.push(markerData);
+    newMarkers?.push(markerData);
 
     setMarkers(newMarkers);
 
@@ -192,10 +196,10 @@ const Map = ({ currentCity }) => {
         </form>
       ) : null}
 
-      {markers.length !== 0
-        ? markers.map((geoJson, i) => {
-            const longitude = geoJson.coordinates.x;
-            const latitude = geoJson.coordinates.y;
+      {markers?.length !== 0
+        ? markers?.map((geoJson, i) => {
+            const longitude = geoJson.coordinates?.x;
+            const latitude = geoJson.coordinates?.y;
             const text = geoJson.text;
 
             return (

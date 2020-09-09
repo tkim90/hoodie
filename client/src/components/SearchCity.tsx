@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { media } from './media';
-// import Geocoder from '@mapbox/react-geocoder';
 
 const SearchBar = styled.input`
   font-family: Helvetica, sans-serif;
@@ -9,10 +7,6 @@ const SearchBar = styled.input`
   font-weight: bold;
   text-align: center;
   width: 97.5%;
-
-  ${media.phone`
-    width: 100%;
-  `}
 `;
 
 const SearchCity = ({ searchCity }) => {

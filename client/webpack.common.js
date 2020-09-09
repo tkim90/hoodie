@@ -1,7 +1,7 @@
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  entry: __dirname + `/src/index.jsx`,
+  entry: __dirname + `/src/index.tsx`,
   output: {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
@@ -14,6 +14,10 @@ module.exports = {
   ],
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+      },
       {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
@@ -36,6 +40,9 @@ module.exports = {
         ],
       },
     ],
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
   },
   optimization: {
     splitChunks: {

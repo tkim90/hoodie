@@ -1,7 +1,7 @@
 import React, { Suspense, useState, useEffect } from 'react';
-import Categories from './components/Categories.jsx';
+import Categories from './components/Categories';
 import BarLoader from 'react-spinners/BarLoader';
-const Map = React.lazy(() => import('./components/Map.jsx'));
+const Map = React.lazy(() => import('./components/Map'));
 
 const override = `
   top: 50%;
@@ -39,7 +39,7 @@ const App = () => {
   return (
     <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }}>
       <Suspense fallback={<BarLoader css={override} height={4} width={100} />}>
-        <Categories style={{ position: 'absolute' }} searchCity={searchCity} isLoading={loading} />
+        <Categories searchCity={searchCity} isLoading={loading} />
         <Map currentCity={city} />
       </Suspense>
     </div>

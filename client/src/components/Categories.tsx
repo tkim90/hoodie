@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchCity from './SearchCity.jsx';
-import { media } from './media';
+import SearchCity from './SearchCity';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -10,13 +9,6 @@ const Wrapper = styled.div`
   z-index: 11;
   right: 3%;
   top: 30%;
-
-  ${media.phone`
-    height: 30px;
-    width: 100%;
-    top: 0%;
-    right: 0%;
-  `}
 `;
 
 const Logo = styled.div`
@@ -24,16 +16,12 @@ const Logo = styled.div`
   opacity: 0.8;
   height: 86%;
   width: 100.5%;
-
-  ${media.phone`
-    display:none;
-  `}
 `;
 
 const Categories = ({ searchCity, isLoading }) => {
   return (
     <Wrapper>
-      <SearchCity searchCity={searchCity} isLoading={isLoading} />
+      <SearchCity searchCity={searchCity} />
       <Logo />
     </Wrapper>
   );
