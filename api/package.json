@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "api:dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "prod": "NODE_ENV=production node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +15,9 @@
   "dependencies": {
     "cors": "^2.8.5",
     "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.3.3"
   }
 }

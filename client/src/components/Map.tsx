@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 
@@ -35,6 +35,16 @@ const DeleteButton = styled.div`
   border: #999999 solid 1px;
 `;
 
+interface Coordinates {
+  x: number;
+  y: number;
+}
+
+interface IMarker {
+  coordinates: Coordinates;
+  text: string;
+}
+
 const Map = ({ currentCity }) => {
   const initialViewport = {
     // latitude: currentCity.lat,
@@ -49,26 +59,18 @@ const Map = ({ currentCity }) => {
     height: window.innerHeight,
   };
 
-  interface Marker {
-    x: number;
-    y: number;
-  }
-
-  interface IMarkers {
-    coordinates: Marker;
-    text: string;
-  }
-
   const [viewport, setViewport] = useState(initialViewport);
   const [text, setText] = useState('');
   const [inputFormActive, setInputFormActive] = useState<boolean | null>(null);
   const [currentMarkerCoordinates, setCurrentMarkerCoordinates] = useState<number[] | null>([]);
   const [windowXyPoint, setWindowXyPoint] = useState([]);
-  const [markers, setMarkers] = useState<IMarkers[] | null>(null);
+  const [markers, setMarkers] = useState<IMarker[]>([]);
   const [hovered, setHovered] = useState(false);
 
+  useEffect(() => {}, [markers]);
+
   const onMouseOverHandler = (e) => {
-    e.target.setAttribute('style', 'border: blue solid 1px;');
+    e.target.setAttribute('style', 'border: blue solid 5px;');
   };
 
   const onMouseLeaveHandler = (e) => {
@@ -83,7 +85,7 @@ const Map = ({ currentCity }) => {
     // 2. If a text input form is active, remove it
 
     if (document.getElementById('inputElement')) {
-      setInputFormActive: false;
+      setInputFormActive(false);
     } else {
       setInputFormActive(true);
       setCurrentMarkerCoordinates([longitude, latitude]);
@@ -91,7 +93,6 @@ const Map = ({ currentCity }) => {
       const inputElement: HTMLElement | null = document.getElementById('inputElement');
       inputElement?.focus();
     }
-    // document.getElementById('inputElement').addEventListener('onmouseover')
   };
 
   const onChangeInputHandler = (e) => {
@@ -114,7 +115,10 @@ const Map = ({ currentCity }) => {
   };
 
   const saveGeoJSON = (newGeoJSONobject) => {
-    // Saves GeoJSON to state.
+    /**
+    Save most recent geoJSON input to db via POST /api/v1/markers.
+    @param {Object} geoJSON - the marker geoJSON created by the user.
+    */
 
     // geoJSON data from server (postgres):
     // {
@@ -137,7 +141,6 @@ const Map = ({ currentCity }) => {
     //   }
     // }
 
-    // convert geoJSONobject to postgres output format
     const markerData = {
       coordinates: {
         x: newGeoJSONobject.geometry.coordinates[0],
@@ -146,18 +149,20 @@ const Map = ({ currentCity }) => {
       text: newGeoJSONobject.properties.name,
     };
 
-    let newMarkers = markers;
-    newMarkers?.push(markerData);
+    setMarkers([...markers, markerData]);
+    // console.log("Sending marker: ");
+    // console.log(newGeoJSONobject);
+    console.log(JSON.stringify(newGeoJSONobject)); 
 
-    setMarkers(newMarkers);
-
-    fetch(`${process.env.API_URL}/markers`, {
+    fetch(`${process.env.API_URL}/api/v1/markers`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newGeoJSONobject),
-    });
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
 
   const parseGeoJSON = (currentCoordinates, text) => {

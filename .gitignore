@@ -8,6 +8,5 @@ node_modules/
 *.env
 local.env
 
-# Compiled
-client/dist/bundle.js
-build/
+# Build dirs
+client/dist
